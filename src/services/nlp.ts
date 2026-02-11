@@ -161,11 +161,11 @@ export const parseTaskInput = (input: string): ParsedTask => {
 
     // --- Generic Keywords ---
     const keywords = [
-        { regex: /\b(morgens|morning|früh|early)\b/i, h: 8 },
-        { regex: /\b(mittags|noon|lunch)\b/i, h: 12 },
-        { regex: /\b(nachmittags|afternoon)\b/i, h: 15 },
-        { regex: /\b(abends|evening|tonight|dinner)\b/i, h: 19 },
-        { regex: /\b(nachts|night|midnight)\b/i, h: 23 }
+        { regex: /\b(morgens?|morning|früh|early|vormittags?|frühstück)\b/i, h: 8 },
+        { regex: /\b(mittags?|noon|lunch|mittagessen)\b/i, h: 12 },
+        { regex: /\b(nachmittags?|afternoon)\b/i, h: 15 },
+        { regex: /\b(abends?|evening|tonight|dinner|abendessen)\b/i, h: 19 },
+        { regex: /\b(nachts?|night|midnight)\b/i, h: 23 }
     ];
 
     for (const kw of keywords) {

@@ -13,6 +13,7 @@ export const TaskDetailModal: React.FC = () => {
     const { tasks, selectedTaskId, setSelectedTaskId, updateTask, deleteTask, toggleTask } = useTasks();
     const [editMode, setEditMode] = useState(false);
     const [input, setInput] = useState('');
+    const [parsedPreview, setParsedPreview] = useState<ReturnType<typeof parseTaskInput> | null>(null);
 
     // Find the selected task
     const task = tasks.find(t => t.id === selectedTaskId);
@@ -24,6 +25,14 @@ export const TaskDetailModal: React.FC = () => {
             setEditMode(false);
         }
     }, [task]);
+
+    useEffect(() => {
+        if (editMode && input.trim()) {
+            setParsedPreview(parseTaskInput(input));
+        } else {
+            setParsedPreview(null);
+        }
+    }, [input, editMode]);
 
     if (!selectedTaskId || !task) return null;
 
@@ -97,12 +106,30 @@ export const TaskDetailModal: React.FC = () => {
                                         placeholder="Notizen hinzufügen..."
                                         autoFocus
                                     />
+
+                                    {parsedPreview && (parsedPreview.date || parsedPreview.recurrence) && (
+                                        <div className={styles.preview}>
+                                            {parsedPreview.date && (
+                                                <span className={styles.previewTag}>
+                                                    <CalendarIcon size={12} />
+                                                    {format(parsedPreview.date, "eee, d. MMM HH:mm", { locale: de })}
+                                                </span>
+                                            )}
+                                            {parsedPreview.recurrence && (
+                                                <span className={styles.previewTag}>
+                                                    <RotateCw size={12} />
+                                                    {parsedPreview.recurrence.type === 'daily' ? 'Täglich' : 'Wöchentlich'}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+
                                     <div className={styles.editActions}>
-                                        <button onClick={() => setEditMode(false)} className="text-secondary">
+                                        <button onClick={() => setEditMode(false)} className="text-secondary" style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-body)' }}>
                                             Abbrechen
                                         </button>
-                                        <button onClick={handleUpdate} style={{ color: 'var(--color-accent)', fontWeight: '600' }}>
-                                            Fertig
+                                        <button onClick={handleUpdate} style={{ color: 'var(--color-accent)', fontWeight: '600', fontSize: 'var(--font-size-body)' }}>
+                                            Speichern
                                         </button>
                                     </div>
                                 </div>

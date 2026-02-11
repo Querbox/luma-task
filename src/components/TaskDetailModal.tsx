@@ -47,11 +47,7 @@ export const TaskDetailModal: React.FC = () => {
     };
 
     const handleReminderToggle = async () => {
-        const newValue = !task.hasReminder;
-        await updateTask(task.id, { hasReminder: newValue });
-        if (newValue) {
-            setShowReminderPicker(true);
-        }
+        setShowReminderPicker(!showReminderPicker);
     };
 
     const handleReminderDateChange = async (dateStr: string) => {
@@ -108,7 +104,6 @@ export const TaskDetailModal: React.FC = () => {
                                 value={title}
                                 onChange={(e) => handleTitleChange(e.target.value)}
                                 placeholder="Aufgabe"
-                                autoFocus
                             />
 
                             {/* Info rows - tap to change */}

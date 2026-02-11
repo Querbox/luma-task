@@ -1,0 +1,120 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-md);
+    padding-bottom: 100px;
+}
+
+.header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.title {
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+}
+
+.stats {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.statCard {
+    background: var(--color-bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.icon {
+    color: var(--color-accent);
+    margin-bottom: 4px;
+}
+
+.statValue {
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+}
+
+.statLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.graphContainer {
+    overflow-x: auto;
+    padding-bottom: var(--spacing-md);
+    -webkit-overflow-scrolling: touch;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.graphContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.graph {
+    display: flex;
+    gap: 3px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background-color: var(--color-bg-tertiary);
+    transition: opacity 0.2s;
+}
+
+/* Intensity levels */
+.cell[data-intensity="0"] {
+    background-color: var(--color-bg-tertiary);
+    opacity: 0.3;
+}
+
+.cell[data-intensity="1"] {
+    background-color: var(--color-accent);
+    opacity: 0.4;
+}
+
+.cell[data-intensity="2"] {
+    background-color: var(--color-accent);
+    opacity: 0.6;
+}
+
+.cell[data-intensity="3"] {
+    background-color: var(--color-accent);
+    opacity: 0.8;
+}
+
+.cell[data-intensity="4"] {
+    background-color: var(--color-accent);
+    opacity: 1.0;
+}
+
+.footer {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--spacing-lg);
+}

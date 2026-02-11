@@ -1,0 +1,141 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-bg-secondary);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    padding-bottom: max(var(--safe-area-bottom), 20px);
+    z-index: 201;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-bottom: var(--spacing-md);
+}
+
+.dragHandle {
+    width: 40px;
+    height: 4px;
+    background: var(--color-text-tertiary);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+.closeBtn {
+    position: absolute;
+    right: 0;
+    top: -8px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.viewContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: text;
+}
+
+.title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+}
+
+.metaRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.metaTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--color-bg-tertiary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: 4px;
+}
+
+.editContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 100px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    resize: none;
+}
+
+.editActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: var(--spacing-md);
+}
+
+.actionBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+    padding: 16px;
+    border-radius: var(--radius-md);
+}
+
+.deleteBtn {
+    background: rgba(255, 69, 58, 0.1);
+    /* Red tint */
+    color: var(--color-danger);
+}
+
+.active {
+    background: var(--color-success);
+    color: white;
+}

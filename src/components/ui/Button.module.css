@@ -1,0 +1,61 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-semibold);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Variants */
+.primary {
+    background-color: var(--color-accent);
+    color: #FFFFFF;
+}
+
+.primary:active {
+    background-color: var(--color-accent);
+    /* Handled by framer-motion opacity/scale mostly, but good fallback */
+    opacity: 0.9;
+}
+
+.secondary {
+    background-color: var(--color-bg-tertiary);
+    /* Slightly lighter/darker than bg */
+    color: var(--color-text-primary);
+}
+
+.ghost {
+    background-color: transparent;
+    color: var(--color-accent);
+}
+
+.icon {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    padding: 0;
+}
+
+/* Sizes */
+.sm {
+    padding: 8px 16px;
+    font-size: var(--font-size-sm);
+}
+
+.md {
+    padding: 12px 24px;
+    font-size: var(--font-size-base);
+}
+
+.lg {
+    padding: 16px 32px;
+    font-size: var(--font-size-lg);
+}
+
+.icon {
+    width: 44px;
+    /* Apple Hit Target */
+    height: 44px;
+}

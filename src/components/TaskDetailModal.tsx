@@ -4,24 +4,29 @@ import { useTasks } from '../hooks/useTasks';
 import { parseTaskInput } from '../services/nlp';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { X, Trash2, CheckCircle2, Calendar as CalendarIcon, RotateCw } from 'lucide-react';
+import { X, Calendar as CalendarIcon, RotateCw, Bell, Info } from 'lucide-react';
 import clsx from 'clsx';
 import { Button } from './ui/Button';
+import { Switch } from './ui/Switch';
 import styles from './TaskDetailModal.module.css';
 
 export const TaskDetailModal: React.FC = () => {
     const { tasks, selectedTaskId, setSelectedTaskId, updateTask, deleteTask, toggleTask } = useTasks();
     const [editMode, setEditMode] = useState(false);
     const [input, setInput] = useState('');
+    const [title, setTitle] = useState('');
+    const [hasReminder, setHasReminder] = useState(false);
+    const [reminderDate, setReminderDate] = useState<string>('');
     const [parsedPreview, setParsedPreview] = useState<ReturnType<typeof parseTaskInput> | null>(null);
 
-    // Find the selected task
     const task = tasks.find(t => t.id === selectedTaskId);
 
     useEffect(() => {
         if (task) {
-            // When opening, reset input to task content (or meaningful default)
-            setInput(task.content || task.title);
+            setInput(task.content || '');
+            setTitle(task.title || '');
+            setHasReminder(!!task.hasReminder);
+            setReminderDate(task.reminderDate ? format(task.reminderDate, "yyyy-MM-dd'T'HH:mm") : '');
             setEditMode(false);
         }
     }, [task]);
@@ -39,21 +44,15 @@ export const TaskDetailModal: React.FC = () => {
     const handleClose = () => setSelectedTaskId(null);
 
     const handleUpdate = async () => {
-        if (!input.trim()) return;
-
-        // Parse the new input to extract date/recurrence
-        const parsed = parseTaskInput(input);
+        const parsed = input.trim() ? parseTaskInput(input) : null;
 
         await updateTask(task.id, {
             content: input,
-            title: parsed.title,
-            dueDate: parsed.date ? parsed.date.getTime() : task.dueDate, // Keep old date if not mentioned? Or clear? 
-            // Better logic: If parsed.date is undefined, it means no new date was mentioned. 
-            // Should we keep the old one? Usually yes, unless explicitly removed. 
-            // But if I change "Gym tomorrow" to "Gym", I might mean remove date.
-            // For now, let's assume if it finds a date, it updates. If not, it keeps old.
-            // Power user might want "Gym remove date".
-            recurrence: parsed.recurrence || task.recurrence
+            title: title || parsed?.title || task.title,
+            dueDate: parsed?.date ? parsed.date.getTime() : task.dueDate,
+            recurrence: parsed?.recurrence || task.recurrence,
+            hasReminder,
+            reminderDate: hasReminder && reminderDate ? new Date(reminderDate).getTime() : undefined
         });
 
         setEditMode(false);
@@ -68,7 +67,6 @@ export const TaskDetailModal: React.FC = () => {
 
     const handleToggle = async () => {
         await toggleTask(task.id);
-        // Automatically close if completing? Maybe just minimal feedback.
     };
 
     return (
@@ -92,20 +90,49 @@ export const TaskDetailModal: React.FC = () => {
                         <div className={styles.header}>
                             <div className={styles.dragHandle} />
                             <Button variant="ghost" size="icon" onClick={handleClose} className={styles.closeBtn}>
-                                <X size={20} />
+                                <X size={16} />
                             </Button>
                         </div>
 
                         <div className={styles.content}>
                             {editMode ? (
                                 <div className={styles.editContainer}>
-                                    <textarea
-                                        value={input}
-                                        onChange={(e) => setInput(e.target.value)}
-                                        className={styles.textarea}
-                                        placeholder="Notizen hinzufügen..."
-                                        autoFocus
-                                    />
+                                    <div className={styles.inputGroup}>
+                                        <input
+                                            className={styles.titleInput}
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            placeholder="Titel"
+                                        />
+                                        <textarea
+                                            value={input}
+                                            onChange={(e) => setInput(e.target.value)}
+                                            className={styles.textarea}
+                                            placeholder="Notizen hinzufügen..."
+                                        />
+                                    </div>
+
+                                    <div className={styles.groupedList}>
+                                        <div className={styles.listItem}>
+                                            <div className={styles.itemLabel}>
+                                                <div className={styles.iconBox} style={{ background: '#FF9F0A' }}>
+                                                    <Bell size={18} />
+                                                </div>
+                                                <span>Erinnerung</span>
+                                            </div>
+                                            <Switch checked={hasReminder} onChange={setHasReminder} />
+                                        </div>
+                                        {hasReminder && (
+                                            <div className={styles.datePickerRow}>
+                                                <input
+                                                    type="datetime-local"
+                                                    className={styles.dateTimeInput}
+                                                    value={reminderDate}
+                                                    onChange={(e) => setReminderDate(e.target.value)}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
 
                                     {parsedPreview && (parsedPreview.date || parsedPreview.recurrence) && (
                                         <div className={styles.preview}>
@@ -125,22 +152,30 @@ export const TaskDetailModal: React.FC = () => {
                                     )}
 
                                     <div className={styles.editActions}>
-                                        <button onClick={() => setEditMode(false)} className="text-secondary" style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-body)' }}>
+                                        <button onClick={() => setEditMode(false)} className={styles.cancelBtn}>
                                             Abbrechen
                                         </button>
-                                        <button onClick={handleUpdate} style={{ color: 'var(--color-accent)', fontWeight: '600', fontSize: 'var(--font-size-body)' }}>
-                                            Speichern
+                                        <button onClick={handleUpdate} className={styles.saveBtn}>
+                                            Fertig
                                         </button>
                                     </div>
                                 </div>
                             ) : (
                                 <div className={styles.viewContainer} onClick={() => setEditMode(true)}>
                                     <h2 className={styles.title}>{task.title}</h2>
-                                    <div className={styles.metaRow}>
+                                    {task.content && <p className={styles.hint}>{task.content}</p>}
+
+                                    <div className={styles.preview}>
                                         {task.dueDate && (
                                             <span className={styles.metaTag}>
                                                 <CalendarIcon size={14} />
                                                 {format(task.dueDate, 'd. MMMM yyyy', { locale: de })}
+                                            </span>
+                                        )}
+                                        {task.hasReminder && (
+                                            <span className={styles.metaTag} style={{ color: 'var(--color-warning)' }}>
+                                                <Bell size={14} />
+                                                {task.reminderDate ? format(task.reminderDate, 'HH:mm', { locale: de }) : 'An'}
                                             </span>
                                         )}
                                         {task.recurrence && (
@@ -150,7 +185,17 @@ export const TaskDetailModal: React.FC = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <p className={styles.hint}>Tippen zum Bearbeiten</p>
+
+                                    <div className={styles.groupedList} style={{ marginTop: '12px' }}>
+                                        <div className={styles.listItem}>
+                                            <div className={styles.itemLabel}>
+                                                <div className={styles.iconBox} style={{ background: '#8E8E93' }}>
+                                                    <Info size={18} />
+                                                </div>
+                                                <span>Details bearbeiten</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 
@@ -159,16 +204,14 @@ export const TaskDetailModal: React.FC = () => {
                                     className={clsx(styles.actionBtn, task.isCompleted ? styles.active : '')}
                                     onClick={handleToggle}
                                 >
-                                    <CheckCircle2 size={20} />
-                                    <span>{task.isCompleted ? 'Als unerledigt markieren' : 'Erledigen'}</span>
+                                    {task.isCompleted ? 'Als unerledigt markieren' : 'Erledigen'}
                                 </button>
 
                                 <button
                                     className={clsx(styles.actionBtn, styles.deleteBtn)}
                                     onClick={handleDelete}
                                 >
-                                    <Trash2 size={20} />
-                                    <span>Löschen</span>
+                                    Aufgabe löschen
                                 </button>
                             </div>
                         </div>

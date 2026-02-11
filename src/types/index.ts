@@ -19,6 +19,8 @@ export interface Task {
     originalDueDate?: number;
     icon?: string;
     tags?: string[];
+    hasReminder?: boolean;
+    reminderDate?: number; // Optional specific reminder time, defaults to dueDate if not set
 }
 
 export type NewTask = Omit<Task, 'id' | 'createdAt' | 'postponedCount' | 'isCompleted'>;

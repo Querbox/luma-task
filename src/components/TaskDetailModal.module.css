@@ -36,14 +36,24 @@
 }
 
 .closeBtn {
-    display: none;
-    /* iOS sheets usually don't have an X button if they have a drag handle or swipe down */
+    position: absolute;
+    right: var(--space-20);
+    top: var(--space-16);
+    background: var(--color-bg-tertiary);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
 }
 
 .content {
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
+    padding-top: var(--space-8);
 }
 
 .viewContainer {
@@ -53,9 +63,10 @@
 }
 
 .title {
-    font-size: var(--font-size-section);
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
 }
 
 .metaRow {
@@ -81,31 +92,118 @@
 .editContainer {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: var(--space-24);
+}
+
+.inputGroup {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.titleInput {
+    width: 100%;
+    background: transparent;
+    font-size: var(--font-size-section);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    padding: var(--space-12) var(--space-16);
+    border: none;
+    border-bottom: 0.5px solid var(--glass-border);
 }
 
 .textarea {
     width: 100%;
-    min-height: 120px;
+    min-height: 100px;
     background: transparent;
     font-size: var(--font-size-body);
     line-height: var(--line-height-base);
     color: var(--color-text-primary);
+    padding: var(--space-12) var(--space-16);
     border: none;
     resize: none;
 }
 
+.groupedList {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-12) var(--space-16);
+    background: var(--color-bg-tertiary);
+    border-bottom: 0.5px solid var(--glass-border);
+    min-height: 50px;
+}
+
+.listItem:last-child {
+    border-bottom: none;
+}
+
+.itemLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-size: var(--font-size-body);
+    color: var(--color-text-primary);
+}
+
+.iconBox {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.datePickerRow {
+    background: var(--color-bg-tertiary);
+    padding: var(--space-8) var(--space-16) var(--space-16);
+    border-top: 0.5px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+}
+
+.dateTimeInput {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-8) var(--space-12);
+    color: var(--color-accent);
+    font-size: var(--font-size-body);
+    width: 100%;
+}
+
 .editActions {
     display: flex;
-    justify-content: flex-end;
-    gap: var(--space-12);
+    justify-content: space-between;
+    margin-top: var(--space-8);
+}
+
+.cancelBtn {
+    color: var(--color-accent);
+    font-weight: 400;
+}
+
+.saveBtn {
+    color: var(--color-accent);
+    font-weight: 600;
 }
 
 .actions {
     display: flex;
     flex-direction: column;
-    gap: var(--space-12);
-    margin-top: var(--space-8);
+    gap: var(--space-1);
+    margin-top: var(--space-12);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
 }
 
 .actionBtn {
@@ -114,17 +212,20 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-8);
-    height: 50px;
+    height: 54px;
     background: var(--color-bg-tertiary);
-    border-radius: var(--radius-md);
+    border: none;
     font-size: var(--font-size-body);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
+    color: var(--color-accent);
+}
+
+.actionBtn:active {
+    background: var(--color-bg-secondary);
 }
 
 .deleteBtn {
-    background: transparent;
     color: var(--color-danger);
+    border-top: 0.5px solid var(--glass-border);
 }
 
 .active {
@@ -135,10 +236,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-8);
-    padding: var(--space-12);
-    background: var(--color-bg-tertiary);
-    border-radius: var(--radius-md);
-    border: 1px dashed var(--glass-border);
+    padding: var(--space-4) 0;
 }
 
 .previewTag {

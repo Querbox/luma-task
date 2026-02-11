@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+
+.switch {
+    width: 51px;
+    height: 31px;
+    background: var(--color-bg-tertiary);
+    border-radius: 31px;
+    position: relative;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.checked {
+    background: #34C759;
+    /* iOS Green */
+}
+
+.thumb {
+    width: 27px;
+    height: 27px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
+}
+
+.checked .thumb {
+    transform: translateX(20px);
+}
+
+.label {
+    font-size: var(--font-size-body);
+    color: var(--color-text-primary);
+}

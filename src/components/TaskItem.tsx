@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, type PanInfo, useAnimation, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { Check, Trash2, Calendar } from 'lucide-react';
+import { Check, Trash2, Calendar, Bell } from 'lucide-react';
 import clsx from 'clsx';
 import type { Task } from '../types';
 import styles from './TaskItem.module.css';
@@ -113,6 +113,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                                 )}>
                                     <Calendar size={12} />
                                     {formatDate(task.dueDate)}
+                                </span>
+                            )}
+                            {task.hasReminder && (
+                                <span className={styles.date} style={{ color: 'var(--color-warning)' }}>
+                                    <Bell size={12} />
                                 </span>
                             )}
                             {task.tags?.map(tag => (

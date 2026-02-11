@@ -1,6 +1,6 @@
 .container {
     position: fixed;
-    bottom: calc(var(--tab-bar-height) + var(--space-16));
+    bottom: calc(var(--tab-bar-height) + var(--safe-area-bottom) + var(--space-16));
     left: var(--space-16);
     right: var(--space-16);
     background: var(--glass-bg);

@@ -1,6 +1,6 @@
 .container {
     padding: var(--space-20);
-    padding-bottom: 120px;
+    padding-bottom: calc(var(--tab-bar-height) + var(--space-12));
     background: var(--color-bg-primary);
 }
 

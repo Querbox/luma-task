@@ -10,6 +10,8 @@ interface TaskContextType {
     toggleTask: (id: string, completed?: boolean) => Promise<void>;
     updateTask: (id: string, updates: Partial<Task>) => Promise<Task | undefined>;
     deleteTask: (id: string) => Promise<void>;
+    exportTasks: () => Promise<string>;
+    importTasks: (jsonData: string) => Promise<void>;
     refreshTasks: () => void;
     selectedTaskId: string | null;
     setSelectedTaskId: (id: string | null) => void;
@@ -75,6 +77,22 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         showToast('Aufgabe gelöscht', 'warning');
     };
 
+    const exportTasks = async () => {
+        return await taskService.exportTasks();
+    };
+
+    const importTasks = async (jsonData: string) => {
+        try {
+            await taskService.importTasks(jsonData);
+            await fetchTasks();
+            showToast('Daten erfolgreich importiert', 'success');
+        } catch (err) {
+            console.error('Import failed', err);
+            showToast('Import fehlgeschlagen', 'error');
+            throw err;
+        }
+    };
+
     return (
         <TaskContext.Provider value={{
             tasks,
@@ -83,6 +101,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
             toggleTask,
             updateTask,
             deleteTask,
+            exportTasks,
+            importTasks,
             refreshTasks: fetchTasks,
             selectedTaskId,
             setSelectedTaskId

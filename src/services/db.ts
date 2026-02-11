@@ -19,15 +19,22 @@ let dbPromise: Promise<IDBPDatabase<LumaDB>>;
 
 export const getDB = () => {
     if (!dbPromise) {
+        // Request persistent storage
+        if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
+            navigator.storage.persist().then(persistent => {
+                if (persistent) {
+                    console.log('Storage will not be cleared except by explicit user action');
+                } else {
+                    console.log('Storage may be cleared under storage pressure');
+                }
+            });
+        }
+
         dbPromise = openDB<LumaDB>(DB_NAME, DB_VERSION, {
             upgrade(db) {
                 if (!db.objectStoreNames.contains('tasks')) {
                     const store = db.createObjectStore('tasks', { keyPath: 'id' });
                     store.createIndex('by-date', 'dueDate');
-                    // For completed tasks we might want to index isCompleted, 
-                    // or just filter in memory as dataset shouldn't be massive.
-                    // Boolean indexing in IDB is a bit tricky, often use 0/1. 
-                    // But for now, simple scan or memory filter is likely fine for personal task lists.
                 }
             },
         });

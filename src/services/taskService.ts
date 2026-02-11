@@ -46,5 +46,23 @@ export const taskService = {
     async delete(id: string): Promise<void> {
         const db = await getDB();
         await db.delete('tasks', id);
+    },
+
+    async exportTasks(): Promise<string> {
+        const tasks = await this.getAll();
+        return JSON.stringify(tasks, null, 2);
+    },
+
+    async importTasks(jsonData: string): Promise<void> {
+        const tasks = JSON.parse(jsonData) as Task[];
+        const db = await getDB();
+        const tx = db.transaction('tasks', 'readwrite');
+        const store = tx.objectStore('tasks');
+
+        // Clear existing or just merge? Let's merge by putting
+        for (const task of tasks) {
+            await store.put(task);
+        }
+        await tx.done;
     }
 };

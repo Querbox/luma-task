@@ -4,19 +4,24 @@ import { Focus } from './pages/Focus';
 import { Calendar } from './pages/Calendar';
 import { Heatmap } from './pages/Heatmap';
 import { TaskProvider } from './context/TaskContext';
+import { NotificationProvider } from './context/NotificationContext';
+import { ToastContainer } from './components/ui/Toast';
 
 function App() {
   return (
     <BrowserRouter basename="/luma-task">
-      <TaskProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Focus />} />
-            <Route path="calendar" element={<Calendar />} />
-            <Route path="heatmap" element={<Heatmap />} />
-          </Route>
-        </Routes>
-      </TaskProvider>
+      <NotificationProvider>
+        <TaskProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Focus />} />
+              <Route path="calendar" element={<Calendar />} />
+              <Route path="heatmap" element={<Heatmap />} />
+            </Route>
+          </Routes>
+          <ToastContainer />
+        </TaskProvider>
+      </NotificationProvider>
     </BrowserRouter>
   );
 }

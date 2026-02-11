@@ -10,13 +10,45 @@
 .header {
     padding-top: var(--spacing-lg);
     padding-bottom: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .title {
     font-size: var(--font-size-xxl);
     font-weight: var(--font-weight-bold);
     margin-bottom: 4px;
+}
+
+.notificationButton {
+    background: rgba(0, 122, 255, 0.1);
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    color: #007aff;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    margin-top: 4px;
+}
+
+.notificationButton:hover {
+    background: rgba(0, 122, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.notificationButton:active {
+    transform: scale(0.96);
+}
+
+.icon {
+    font-size: 14px;
 }
 
 .subtitle {

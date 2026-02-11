@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Task, NewTask } from '../types';
 import { taskService } from '../services/taskService';
+import { useNotification } from './NotificationContext';
 
 interface TaskContextType {
     tasks: Task[];
@@ -20,6 +21,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+    const { showToast } = useNotification();
 
     const fetchTasks = useCallback(async () => {
         try {
@@ -39,6 +41,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const addTask = async (task: NewTask) => {
         const newTask = await taskService.add(task);
         setTasks(prev => [...prev, newTask]);
+        showToast('Aufgabe hinzugefügt', 'success');
         return newTask;
     };
 
@@ -51,6 +54,9 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (updated) {
             setTasks(prev => prev.map(t => t.id === id ? updated : t));
+            if (newStatus) {
+                showToast('Aufgabe abgeschlossen', 'success');
+            }
         }
     };
 
@@ -58,6 +64,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const updated = await taskService.update(id, updates);
         if (updated) {
             setTasks(prev => prev.map(t => t.id === id ? updated : t));
+            showToast('Aufgabe aktualisiert', 'info');
         }
         return updated;
     };
@@ -65,6 +72,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const deleteTask = async (id: string) => {
         await taskService.delete(id);
         setTasks(prev => prev.filter(t => t.id !== id));
+        showToast('Aufgabe gelöscht', 'warning');
     };
 
     return (

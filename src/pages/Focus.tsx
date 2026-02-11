@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTasks } from '../hooks/useTasks';
+import { useNotifications } from '../hooks/useNotifications';
 import { TaskItem } from '../components/TaskItem';
 import { TaskInput } from '../components/TaskInput';
 import { isToday, isPast, addDays, isWithinInterval, startOfDay } from 'date-fns';
@@ -8,6 +9,7 @@ import styles from './Focus.module.css';
 
 export const Focus: React.FC = () => {
     const { tasks, addTask, toggleTask, deleteTask, loading, setSelectedTaskId } = useTasks();
+    const { permission, requestPermission, isSupported } = useNotifications();
 
     const groups = useMemo(() => {
         const today = startOfDay(new Date());
@@ -58,8 +60,20 @@ export const Focus: React.FC = () => {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Heute</h1>
-                <p className={styles.subtitle}>{new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                <div>
+                    <h1 className={styles.title}>Heute</h1>
+                    <p className={styles.subtitle}>{new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                </div>
+                {isSupported && permission !== 'granted' && (
+                    <button
+                        className={styles.notificationButton}
+                        onClick={requestPermission}
+                        title="Benachrichtigungen aktivieren"
+                    >
+                        <span className={styles.icon}>🔔</span>
+                        <span>Aktivieren</span>
+                    </button>
+                )}
             </header>
 
             <div className={styles.list}>

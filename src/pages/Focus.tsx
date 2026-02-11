@@ -5,11 +5,14 @@ import { TaskItem } from '../components/TaskItem';
 import { TaskInput } from '../components/TaskInput';
 import { isToday, isPast, addDays, isWithinInterval, startOfDay } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
+import { analyzeTasks } from '../services/intelligenceService';
 import styles from './Focus.module.css';
 
 export const Focus: React.FC = () => {
-    const { tasks, addTask, toggleTask, deleteTask, loading, setSelectedTaskId } = useTasks();
+    const { tasks, addTask, toggleTask, updateTask, deleteTask, loading, setSelectedTaskId } = useTasks();
     const { permission, requestPermission, isSupported } = useNotifications();
+
+    const suggestion = useMemo(() => analyzeTasks(tasks), [tasks]);
 
     const groups = useMemo(() => {
         const today = startOfDay(new Date());
@@ -19,25 +22,16 @@ export const Focus: React.FC = () => {
         const soonGroup = [];
         const laterGroup = [];
 
-        // Sort by due date
         const sortedTasks = [...tasks].sort((a, b) => {
-            // Put completed at bottom? Or hide? 
-            // Usually Focus view hides completed or moves to bottom.
             if (a.isCompleted !== b.isCompleted) return a.isCompleted ? 1 : -1;
-            // Date sort
-            const dateA = a.dueDate || Infinity; // No date = end of list? or beginning?
+            const dateA = a.dueDate || Infinity;
             const dateB = b.dueDate || Infinity;
             return dateA - dateB;
         });
 
         for (const task of sortedTasks) {
-            if (task.isCompleted) {
-                // Option: Show completed in a separate "Done" list at bottom or just keep in date group?
-                // Let's keep them in their groups for context, but styled differently
-            }
-
             if (!task.dueDate) {
-                todayGroup.push(task); // No date = Today/Inbox
+                todayGroup.push(task);
             } else {
                 const date = new Date(task.dueDate);
                 if (isPast(date) || isToday(date)) {
@@ -61,7 +55,7 @@ export const Focus: React.FC = () => {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Heute</h1>
+                    <h1 className={styles.title}>Today</h1>
                     <p className={styles.subtitle}>{new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
                 </div>
                 {isSupported && permission !== 'granted' && (
@@ -70,24 +64,24 @@ export const Focus: React.FC = () => {
                         onClick={requestPermission}
                         title="Benachrichtigungen aktivieren"
                     >
-                        <span className={styles.icon}>🔔</span>
-                        <span>Aktivieren</span>
+                        <span>🔔 Aktivieren</span>
                     </button>
                 )}
             </header>
 
             <div className={styles.list}>
-                {/* Today Section */}
-                <section>
+                <section className={styles.section}>
                     {groups.todayGroup.length > 0 ? (
-                        <AnimatePresence>
+                        <AnimatePresence mode="popLayout">
                             {groups.todayGroup.map(task => (
                                 <TaskItem
                                     key={task.id}
                                     task={task}
                                     onToggle={toggleTask}
+                                    onUpdate={updateTask}
                                     onDelete={deleteTask}
                                     onSelect={setSelectedTaskId}
+                                    suggestion={suggestion?.id === `recurring-${task.title.toLowerCase()}` ? suggestion : null}
                                 />
                             ))}
                         </AnimatePresence>
@@ -98,16 +92,16 @@ export const Focus: React.FC = () => {
                     )}
                 </section>
 
-                {/* Soon Section */}
                 {groups.soonGroup.length > 0 && (
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Demnächst</h2>
-                        <AnimatePresence>
+                        <AnimatePresence mode="popLayout">
                             {groups.soonGroup.map(task => (
                                 <TaskItem
                                     key={task.id}
                                     task={task}
                                     onToggle={toggleTask}
+                                    onUpdate={updateTask}
                                     onDelete={deleteTask}
                                     onSelect={setSelectedTaskId}
                                 />
@@ -116,16 +110,16 @@ export const Focus: React.FC = () => {
                     </section>
                 )}
 
-                {/* Later Section - Collapsible? For now just list */}
                 {groups.laterGroup.length > 0 && (
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Später</h2>
-                        <AnimatePresence>
+                        <AnimatePresence mode="popLayout">
                             {groups.laterGroup.map(task => (
                                 <TaskItem
                                     key={task.id}
                                     task={task}
                                     onToggle={toggleTask}
+                                    onUpdate={updateTask}
                                     onDelete={deleteTask}
                                     onSelect={setSelectedTaskId}
                                 />
@@ -133,9 +127,6 @@ export const Focus: React.FC = () => {
                         </AnimatePresence>
                     </section>
                 )}
-
-                {/* Spacer for FAB/Input */}
-                <div style={{ height: '80px' }} />
             </div>
 
             <TaskInput onAddTask={addTask} />

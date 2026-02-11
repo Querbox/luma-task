@@ -54,6 +54,33 @@
     letter-spacing: 0.5px;
 }
 
+.topActivities {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1.5;
+}
+
+.activityBadge {
+    background: var(--color-bg-secondary);
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+}
+
+.badgeIcon {
+    font-size: 24px;
+}
+
+.badgeCount {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
 .graphContainer {
     overflow-x: auto;
     padding-bottom: var(--spacing-md);

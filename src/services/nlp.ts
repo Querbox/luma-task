@@ -8,7 +8,48 @@ interface ParsedTask {
         interval?: number;
         daysOfWeek?: number[];
     };
+    icon?: string;
 }
+
+const ICON_MAP: { [key: string]: string } = {
+    'gym': '🏋️',
+    'sport': '🏃',
+    'laufen': '🏃',
+    'yoga': '🧘',
+    'kochen': '🍳',
+    'essen': '🍴',
+    'einkaufen': '🛒',
+    'shop': '🛒',
+    'arbeit': '💼',
+    'work': '💼',
+    'meeting': '📅',
+    'anruf': '📞',
+    'call': '📞',
+    'lesen': '📚',
+    'read': '📚',
+    'code': '💻',
+    'programmieren': '💻',
+    'putzen': '🧹',
+    'clean': '🧹',
+    'schlafen': '😴',
+    'sleep': '😴',
+    'meditieren': '🧘',
+    'meditate': '🧘',
+    'arzt': '🏥',
+    'doctor': '🏥',
+    'versicherung': '📄',
+    'bank': '🏦',
+    'geld': '💰',
+    'money': '💰'
+};
+
+const getIconForTitle = (title: string): string | undefined => {
+    const lowerTitle = title.toLowerCase();
+    for (const [key, icon] of Object.entries(ICON_MAP)) {
+        if (lowerTitle.includes(key)) return icon;
+    }
+    return undefined;
+};
 
 const WEEKDAYS_DE: { [key: string]: number } = {
     'sonntag': 0, 'montag': 1, 'dienstag': 2, 'mittwoch': 3, 'donnerstag': 4, 'freitag': 5, 'samstag': 6,
@@ -120,9 +161,12 @@ export const parseTaskInput = (input: string): ParsedTask => {
         consume(/\b(mittags|noon)\b/i);
     }
 
+    const finalTitle = title.trim().replace(/^([,.\- ]+)|([,.\- ]+)$/g, '');
+
     return {
-        title: title.trim().replace(/^([,.\- ]+)|([,.\- ]+)$/g, ''),
+        title: finalTitle,
         date,
-        recurrence
+        recurrence,
+        icon: getIconForTitle(finalTitle)
     };
 };

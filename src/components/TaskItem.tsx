@@ -17,16 +17,20 @@ interface TaskItemProps {
     suggestion?: { message: string; actionLabel: string; apply: (task: Task) => Partial<Task> } | null;
 }
 
+const COMMON_ICONS = ['🏋️', '🏃', '🧘', '🍳', '🛒', '💼', '📅', '📞', '📚', '💻', '🧹', '😴', '🏥', '💰', '✨', '🔥'];
+
 export const TaskItem: React.FC<TaskItemProps> = ({
     task,
     onToggle,
     onUpdate,
     onDelete,
+    onSelect,
     suggestion
 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(task.title);
-    const [preview, setPreview] = useState<{ date?: Date; recurrence?: any } | null>(null);
+    const [preview, setPreview] = useState<{ date?: Date; recurrence?: any; icon?: string } | null>(null);
+    const [showIconPicker, setShowIconPicker] = useState(false);
     const controls = useAnimation();
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -52,11 +56,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         const val = e.target.value;
         setEditValue(val);
         const parsed = parseTaskInput(val);
-        if (parsed.date || parsed.recurrence) {
-            setPreview({ date: parsed.date, recurrence: parsed.recurrence });
-        } else {
-            setPreview(null);
-        }
+        setPreview({
+            date: parsed.date,
+            recurrence: parsed.recurrence,
+            icon: parsed.icon
+        });
     };
 
     const handleBlur = () => {
@@ -65,11 +69,17 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             onUpdate(task.id, {
                 title: parsed.title,
                 dueDate: parsed.date?.getTime() || task.dueDate,
-                recurrence: parsed.recurrence || task.recurrence
+                recurrence: parsed.recurrence || task.recurrence,
+                icon: parsed.icon || task.icon
             });
         }
         setIsEditing(false);
         setPreview(null);
+    };
+
+    const updateIcon = (icon: string) => {
+        onUpdate(task.id, { icon });
+        setShowIconPicker(false);
     };
 
     const formatDate = (timestamp?: number) => {
@@ -98,25 +108,30 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                 className={clsx(styles.item, task.isCompleted && styles.completed)}
                 onClick={() => !isEditing && setIsEditing(true)}
             >
-                <button
-                    className={clsx(styles.checkbox, task.isCompleted && styles.checked)}
+                <div
+                    className={clsx(styles.iconWrapper, preview?.icon && styles.previewIcon)}
                     onClick={(e) => {
                         e.stopPropagation();
-                        onToggle(task.id);
+                        setShowIconPicker(!showIconPicker);
                     }}
                 >
-                    <AnimatePresence>
-                        {task.isCompleted && (
-                            <motion.div
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0, opacity: 0 }}
-                            >
-                                <Check size={14} strokeWidth={4} />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </button>
+                    {preview?.icon || task.icon || <span className={styles.placeholderIcon}>⚪️</span>}
+                </div>
+
+                <AnimatePresence>
+                    {showIconPicker && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                            className={clsx(styles.iconPicker, 'glass')}
+                        >
+                            {COMMON_ICONS.map(icon => (
+                                <button key={icon} onClick={() => updateIcon(icon)}>{icon}</button>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 <div className={styles.content}>
                     {isEditing ? (
@@ -150,6 +165,26 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                         )}
                     </div>
                 </div>
+
+                <button
+                    className={clsx(styles.checkbox, task.isCompleted && styles.checked)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onToggle(task.id);
+                    }}
+                >
+                    <AnimatePresence>
+                        {task.isCompleted && (
+                            <motion.div
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0, opacity: 0 }}
+                            >
+                                <Check size={14} strokeWidth={4} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </button>
 
                 <AnimatePresence>
                     {suggestion && !isEditing && (

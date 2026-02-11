@@ -91,6 +91,28 @@ export const Heatmap: React.FC = () => {
                     </span>
                     <span className={styles.statLabel}>Erledigt</span>
                 </div>
+
+                {/* Top Icons / Activities */}
+                {useMemo(() => {
+                    const iconCounts: Record<string, number> = {};
+                    tasks.filter(t => t.isCompleted && t.icon).forEach(t => {
+                        iconCounts[t.icon!] = (iconCounts[t.icon!] || 0) + 1;
+                    });
+                    const topIcons = Object.entries(iconCounts)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 3);
+
+                    return topIcons.length > 0 && (
+                        <div className={styles.topActivities}>
+                            {topIcons.map(([icon, count]) => (
+                                <div key={icon} className={styles.activityBadge}>
+                                    <span className={styles.badgeIcon}>{icon}</span>
+                                    <span className={styles.badgeCount}>{count}x</span>
+                                </div>
+                            ))}
+                        </div>
+                    );
+                }, [tasks])}
             </div>
 
             <div className={styles.graphContainer}>

@@ -17,6 +17,7 @@ export interface Task {
     completedAt?: number;
     postponedCount: number;
     originalDueDate?: number;
+    icon?: string;
 }
 
 export type NewTask = Omit<Task, 'id' | 'createdAt' | 'postponedCount' | 'isCompleted'>;

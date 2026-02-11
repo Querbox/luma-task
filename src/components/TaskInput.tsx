@@ -33,7 +33,8 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
             content: input,
             title: parsedPreview.title,
             dueDate: parsedPreview.date ? parsedPreview.date.getTime() : undefined,
-            recurrence: parsedPreview.recurrence
+            recurrence: parsedPreview.recurrence,
+            icon: parsedPreview.icon
         });
 
         setInput('');
@@ -65,8 +66,13 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
             </div>
 
             {/* Intelligence Preview */}
-            {parsedPreview && (parsedPreview.date || parsedPreview.recurrence) && (
+            {parsedPreview && (parsedPreview.date || parsedPreview.recurrence || parsedPreview.icon) && (
                 <div className={styles.preview}>
+                    {parsedPreview.icon && (
+                        <span className={styles.iconTag}>
+                            {parsedPreview.icon}
+                        </span>
+                    )}
                     {parsedPreview.date && (
                         <span className={styles.tag}>
                             <CalendarIcon size={12} />

@@ -50,9 +50,10 @@
 
 .sectionTitle {
     font-size: var(--font-size-section);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.3px;
 }
 
 .emptyState {

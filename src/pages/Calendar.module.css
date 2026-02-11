@@ -60,11 +60,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     position: relative;
     font-size: var(--font-size-body);
     color: var(--color-text-primary);
-    transition: background var(--transition-fluid);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .day:active {
@@ -84,20 +84,25 @@
 .today {
     color: var(--color-accent);
     font-weight: var(--font-weight-bold);
+    background: var(--color-accent-subtle);
+}
+
+.selected.today {
+    background: var(--color-accent) !important;
 }
 
 .dots {
     display: flex;
     gap: 2px;
     position: absolute;
-    bottom: 4px;
+    bottom: 6px;
 }
 
 .dot {
     width: 4px;
     height: 4px;
-    border-radius: var(--radius-full);
-    background-color: var(--color-accent);
+    border-radius: 50%;
+    background-color: var(--color-text-tertiary);
 }
 
 .selected .dot {

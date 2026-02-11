@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useTasks } from '../hooks/useTasks';
-import { Shield, Download, Upload, Cloud, Info, ChevronRight, Check } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Download, Upload, Cloud, ChevronRight, Check, RefreshCw } from 'lucide-react';
+import { motion } from 'framer-motion';
 import styles from './Settings.module.css';
 
 export const Settings: React.FC = () => {
@@ -9,7 +9,6 @@ export const Settings: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isPersistent, setIsPersistent] = useState<boolean | null>(null);
     const [importing, setImporting] = useState(false);
-
     const [exported, setExported] = useState(false);
 
     useEffect(() => {
@@ -58,6 +57,10 @@ export const Settings: React.FC = () => {
         reader.readAsText(file);
     };
 
+    const handleReload = () => {
+        window.location.reload();
+    };
+
     return (
         <motion.div
             className={styles.container}
@@ -67,7 +70,6 @@ export const Settings: React.FC = () => {
         >
             <header className={styles.header}>
                 <h1 className={styles.title}>Einstellungen</h1>
-                <p className={styles.subtitle}>Verwalte deine Daten und Sicherheit</p>
             </header>
 
             <section className={styles.section}>
@@ -75,40 +77,33 @@ export const Settings: React.FC = () => {
                 <div className={styles.card}>
                     <div className={styles.item}>
                         <div className={styles.itemContent}>
-                            <div className={styles.iconWrapper} style={{ background: 'var(--color-success)' }}>
+                            <div className={styles.iconWrapper} style={{ background: '#32D74B' }}>
                                 <Shield size={18} />
                             </div>
                             <div className={styles.itemLabel}>
                                 <span className={styles.itemName}>Speicher-Persistenz</span>
                                 <span className={styles.itemDescription}>
                                     {isPersistent
-                                        ? 'Dein Browser schützt deine Daten vor automatischer Löschung.'
-                                        : 'Daten könnten bei geringem Speicherplatz gelöscht werden.'}
+                                        ? 'Deine Daten sind geschützt.'
+                                        : 'Daten könnten gelöscht werden.'}
                                 </span>
                             </div>
                         </div>
-                        {isPersistent && <span className={styles.status}>Aktiv</span>}
+                        {isPersistent && <span className={styles.status}>Ein</span>}
                     </div>
-                </div>
-                <div className={styles.infoBox}>
-                    <Info size={18} className={styles.infoIcon} />
-                    <p className={styles.infoText}>
-                        Luma nutzt IndexedDB. Für maximale Sicherheit solltest du regelmäßig Backups erstellen.
-                    </p>
                 </div>
             </section>
 
             <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>Backup & Wiederherstellung</h2>
+                <h2 className={styles.sectionTitle}>Backup</h2>
                 <div className={styles.card}>
                     <button className={styles.item} onClick={handleExport}>
                         <div className={styles.itemContent}>
-                            <div className={styles.iconWrapper} style={{ background: 'var(--color-accent)' }}>
+                            <div className={styles.iconWrapper} style={{ background: '#007AFF' }}>
                                 {exported ? <Check size={18} /> : <Download size={18} />}
                             </div>
                             <div className={styles.itemLabel}>
-                                <span className={styles.itemName}>Daten exportieren</span>
-                                <span className={styles.itemDescription}>Lade alle deine Aufgaben als JSON-Datei herunter.</span>
+                                <span className={styles.itemName}>Backup erstellen</span>
                             </div>
                         </div>
                         {exported ? <span className={styles.status} style={{ color: 'var(--color-accent)' }}>Gespeichert</span> : <ChevronRight size={18} color="var(--color-text-tertiary)" />}
@@ -116,28 +111,14 @@ export const Settings: React.FC = () => {
 
                     <button className={styles.item} onClick={handleImportClick} disabled={importing}>
                         <div className={styles.itemContent}>
-                            <div className={styles.iconWrapper} style={{ background: 'var(--color-warning)' }}>
+                            <div className={styles.iconWrapper} style={{ background: '#FF9F0A' }}>
                                 <Upload size={18} />
                             </div>
                             <div className={styles.itemLabel}>
                                 <span className={styles.itemName}>Daten importieren</span>
-                                <span className={styles.itemDescription}>Lade ein Backup hoch, um deine Liste zu ergänzen.</span>
                             </div>
                         </div>
-                        <AnimatePresence mode="wait">
-                            {importing ? (
-                                <motion.div
-                                    key="loader"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                >
-                                    ...
-                                </motion.div>
-                            ) : (
-                                <ChevronRight size={18} color="var(--color-text-tertiary)" />
-                            )}
-                        </AnimatePresence>
+                        <ChevronRight size={18} color="var(--color-text-tertiary)" />
                     </button>
                     <input
                         type="file"
@@ -150,27 +131,43 @@ export const Settings: React.FC = () => {
             </section>
 
             <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>Cloud Sync (Beta)</h2>
+                <h2 className={styles.sectionTitle}>System</h2>
                 <div className={styles.card}>
-                    <div className={styles.item} style={{ opacity: 0.6, cursor: 'not-allowed' }}>
+                    <button className={styles.item} onClick={handleReload}>
                         <div className={styles.itemContent}>
-                            <div className={styles.iconWrapper} style={{ background: 'var(--color-bg-tertiary)' }}>
+                            <div className={styles.iconWrapper} style={{ background: '#8E8E93' }}>
+                                <RefreshCw size={18} />
+                            </div>
+                            <div className={styles.itemLabel}>
+                                <span className={styles.itemName}>App neu laden</span>
+                                <span className={styles.itemDescription}>Erzwingt einen Neustart der Anwendung.</span>
+                            </div>
+                        </div>
+                        <ChevronRight size={18} color="var(--color-text-tertiary)" />
+                    </button>
+                </div>
+            </section>
+
+            <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>Mehr</h2>
+                <div className={styles.card}>
+                    <div className={styles.item} style={{ opacity: 0.6 }}>
+                        <div className={styles.itemContent}>
+                            <div className={styles.iconWrapper} style={{ background: '#AF52DE' }}>
                                 <Cloud size={18} />
                             </div>
                             <div className={styles.itemLabel}>
-                                <span className={styles.itemName}>Mit Cloud verbinden</span>
-                                <span className={styles.itemDescription}>Synchronisiere deine Aufgaben über alle Geräte hinweg.</span>
+                                <span className={styles.itemName}>Cloud Sync</span>
+                                <span className={styles.itemDescription}>Coming soon...</span>
                             </div>
                         </div>
-                        <span className={styles.itemDescription}>In Kürze</span>
                     </div>
                 </div>
-                <div className={styles.infoBox} style={{ background: 'rgba(255, 59, 48, 0.05)', border: '1px solid rgba(255, 59, 48, 0.1)' }}>
-                    <p className={styles.infoText} style={{ color: 'var(--color-danger)', fontSize: '13px' }}>
-                        Hinweis: Cloud-Sync ermöglicht die Speicherung außerhalb deines Browsers, sodass Daten auch nach dem Löschen der App erhalten bleiben.
-                    </p>
-                </div>
             </section>
+
+            <div className={styles.footer}>
+                <p>Version 1.2.0 • Made with ❤️</p>
+            </div>
         </motion.div>
     );
 };

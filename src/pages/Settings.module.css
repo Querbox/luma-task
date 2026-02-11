@@ -16,12 +16,6 @@
     letter-spacing: -0.5px;
 }
 
-.subtitle {
-    font-size: var(--font-size-body);
-    color: var(--color-text-secondary);
-    margin-top: var(--space-4);
-}
-
 .section {
     margin-bottom: var(--space-32);
 }
@@ -76,7 +70,7 @@
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
     color: white;
 }
 
@@ -92,7 +86,7 @@
 
 .itemDescription {
     font-size: var(--font-size-small);
-    color: var(--color-text-secondary);
+    color: var(--color-text-tertiary);
 }
 
 .status {
@@ -104,10 +98,9 @@
     display: none;
 }
 
-.infoBox {
-    margin-top: var(--space-12);
-    padding: var(--space-12) var(--space-16);
+.footer {
+    padding: var(--space-32) 0;
+    text-align: center;
     font-size: var(--font-size-small);
-    color: var(--color-text-secondary);
-    line-height: var(--line-height-base);
+    color: var(--color-text-tertiary);
 }

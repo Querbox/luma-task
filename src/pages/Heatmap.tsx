@@ -6,25 +6,22 @@ import {
     format,
     getDay
 } from 'date-fns';
-import { Activity } from 'lucide-react';
+import { Activity, Flame, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 import styles from './Heatmap.module.css';
 
 export const Heatmap: React.FC = () => {
     const { tasks } = useTasks();
 
-    // Generate last 365 days or ~6 months
     const days = useMemo(() => {
         const today = new Date();
-        const start = subDays(today, 364); // 1 year
+        const start = subDays(today, 364);
         return eachDayOfInterval({ start, end: today });
     }, []);
 
     const contributionData = useMemo(() => {
         const data: Record<string, number> = {};
         tasks.forEach(task => {
-            // Check both completion time or just due date if we want "planned vs done"?
-            // Prompt says "Consistency View" -> likely completions.
-            // We tracked `completedAt`.
             if (task.isCompleted && task.completedAt) {
                 const key = format(new Date(task.completedAt), 'yyyy-MM-dd');
                 data[key] = (data[key] || 0) + 1;
@@ -32,6 +29,23 @@ export const Heatmap: React.FC = () => {
         });
         return data;
     }, [tasks]);
+
+    const streaks = useMemo(() => {
+        let currentStreak = 0;
+        let today = new Date();
+
+        // Loop backwards from yesterday/today
+        for (let i = 0; i < 365; i++) {
+            const date = subDays(today, i);
+            const key = format(date, 'yyyy-MM-dd');
+            if (contributionData[key]) {
+                currentStreak++;
+            } else if (i > 0) { // Allow today to be empty without breaking streak yet
+                break;
+            }
+        }
+        return { currentStreak };
+    }, [contributionData]);
 
     const getIntensity = (count: number) => {
         if (count === 0) return 0;
@@ -41,21 +55,13 @@ export const Heatmap: React.FC = () => {
         return 4;
     };
 
-    // Group by weeks for the grid, ensuring alignment
     const weeks = useMemo(() => {
         const weeksArray: (Date | null)[][] = [];
         let currentWeek: (Date | null)[] = [];
-
-        // Pad first week if needed
-        // date-fns getDay returns 0 for Sunday.
-        // We want Mon=0, Sun=6 for array index.
-        const startDay = getDay(days[0]); // 0=Sun, 1=Mon...6=Sat
-        // Adjust: Mon(1)->0, ... Sun(0)->6
+        const startDay = getDay(days[0]);
         const dayIndex = startDay === 0 ? 6 : startDay - 1;
 
-        for (let i = 0; i < dayIndex; i++) {
-            currentWeek.push(null);
-        }
+        for (let i = 0; i < dayIndex; i++) currentWeek.push(null);
 
         days.forEach(day => {
             currentWeek.push(day);
@@ -65,84 +71,102 @@ export const Heatmap: React.FC = () => {
             }
         });
 
-        // Pad last week
         if (currentWeek.length > 0) {
-            while (currentWeek.length < 7) {
-                currentWeek.push(null);
-            }
+            while (currentWeek.length < 7) currentWeek.push(null);
             weeksArray.push(currentWeek);
         }
-
         return weeksArray;
     }, [days]);
 
     return (
-        <div className={styles.container}>
+        <motion.div
+            className={styles.container}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             <header className={styles.header}>
                 <h1 className={styles.title}>Aktivität</h1>
-                <p className={styles.subtitle}>Deine Konsistenz im Überblick</p>
             </header>
 
-            <div className={styles.stats}>
-                <div className={styles.statCard}>
-                    <Activity className={styles.icon} />
-                    <span className={styles.statValue}>
+            <div className={styles.statsGrid}>
+                <div className={styles.statCard} style={{ background: 'rgba(255, 45, 85, 0.1)' }}>
+                    <div className={styles.statHeader}>
+                        <Activity size={16} color="#FF2D55" />
+                        <span className={styles.statLabel}>Erledigt</span>
+                    </div>
+                    <span className={styles.statValue} style={{ color: '#FF2D55' }}>
                         {tasks.filter(t => t.isCompleted).length}
                     </span>
-                    <span className={styles.statLabel}>Erledigt</span>
                 </div>
 
-                {/* Top Icons / Activities */}
-                {useMemo(() => {
-                    const iconCounts: Record<string, number> = {};
-                    tasks.filter(t => t.isCompleted && t.icon).forEach(t => {
-                        iconCounts[t.icon!] = (iconCounts[t.icon!] || 0) + 1;
-                    });
-                    const topIcons = Object.entries(iconCounts)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 3);
-
-                    return topIcons.length > 0 && (
-                        <div className={styles.topActivities}>
-                            {topIcons.map(([icon, count]) => (
-                                <div key={icon} className={styles.activityBadge}>
-                                    <span className={styles.badgeIcon}>{icon}</span>
-                                    <span className={styles.badgeCount}>{count}x</span>
-                                </div>
-                            ))}
-                        </div>
-                    );
-                }, [tasks])}
-            </div>
-
-            <div className={styles.graphContainer}>
-                <div className={styles.graph}>
-                    {weeks.map((week, i) => (
-                        <div key={i} className={styles.column}>
-                            {week.map((day, dIndex) => {
-                                if (!day) return <div key={`empty-${dIndex}`} className={styles.cell} style={{ opacity: 0 }} />;
-
-                                const key = format(day, 'yyyy-MM-dd');
-                                const count = contributionData[key] || 0;
-                                const intent = getIntensity(count);
-
-                                return (
-                                    <div
-                                        key={key}
-                                        className={styles.cell}
-                                        data-intensity={intent}
-                                        title={`${format(day, 'd. MMM')}: ${count} Aufgaben`}
-                                    />
-                                );
-                            })}
-                        </div>
-                    ))}
+                <div className={styles.statCard} style={{ background: 'rgba(255, 159, 10, 0.1)' }}>
+                    <div className={styles.statHeader}>
+                        <Flame size={16} color="#FF9F0A" />
+                        <span className={styles.statLabel}>Streak</span>
+                    </div>
+                    <span className={styles.statValue} style={{ color: '#FF9F0A' }}>
+                        {streaks.currentStreak}
+                    </span>
                 </div>
             </div>
 
-            <p className={styles.footer}>
-                Tippe auf eine Zelle für Details (WIP)
-            </p>
-        </div>
+            <div className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <Calendar size={18} className={styles.cardIcon} />
+                    <span className={styles.cardTitle}>Konsistenz</span>
+                </div>
+                <div className={styles.graphContainer}>
+                    <div className={styles.graph}>
+                        {weeks.map((week, i) => (
+                            <div key={i} className={styles.column}>
+                                {week.map((day, dIndex) => {
+                                    if (!day) return <div key={`empty-${dIndex}`} className={styles.cell} style={{ opacity: 0 }} />;
+                                    const key = format(day, 'yyyy-MM-dd');
+                                    const count = contributionData[key] || 0;
+                                    return (
+                                        <div
+                                            key={key}
+                                            className={styles.cell}
+                                            data-intensity={getIntensity(count)}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <section className={styles.section}>
+                <h3 className={styles.sectionTitle}>Top Aktivitäten</h3>
+                <div className={styles.card}>
+                    {useMemo(() => {
+                        const iconCounts: Record<string, number> = {};
+                        tasks.filter(t => t.isCompleted && t.icon).forEach(t => {
+                            iconCounts[t.icon!] = (iconCounts[t.icon!] || 0) + 1;
+                        });
+                        const topIcons = Object.entries(iconCounts)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 5);
+
+                        return topIcons.length > 0 ? (
+                            <div className={styles.activityList}>
+                                {topIcons.map(([icon, count]) => (
+                                    <div key={icon} className={styles.activityItem}>
+                                        <span className={styles.activityIcon}>{icon}</span>
+                                        <div className={styles.activityInfo}>
+                                            <span className={styles.activityName}>Aktivität</span>
+                                            <span className={styles.activityCount}>{count} Mal</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className={styles.emptyText}>Noch keine Aktivitäten aufgezeichnet.</p>
+                        );
+                    }, [tasks])}
+                </div>
+            </section>
+        </motion.div>
     );
 };

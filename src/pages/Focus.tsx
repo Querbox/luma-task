@@ -47,7 +47,15 @@ export const Focus: React.FC = () => {
     }, [tasks]);
 
     if (loading) {
-        return <div className={styles.loading}>Lade Aufgaben...</div>;
+        return (
+            <div className={styles.loading}>
+                <div className={styles.loadingDots}>
+                    <span>●</span>
+                    <span>●</span>
+                    <span>●</span>
+                </div>
+            </div>
+        );
     }
 
     return (

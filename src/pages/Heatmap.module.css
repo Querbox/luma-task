@@ -1,74 +1,77 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-md);
-    padding-bottom: 100px;
+    padding: var(--space-20);
+    padding-bottom: 140px;
+    background: var(--color-bg-primary);
 }
 
 .header {
-    margin-bottom: var(--spacing-lg);
+    padding-top: calc(var(--safe-area-top) + var(--space-32));
+    padding-bottom: var(--space-24);
 }
 
 .title {
-    font-size: var(--font-size-xxl);
+    font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
-    margin-bottom: 4px;
+    color: var(--color-text-primary);
+    letter-spacing: -0.5px;
+    margin-bottom: var(--space-4);
 }
 
 .subtitle {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-body);
     color: var(--color-text-secondary);
 }
 
 .stats {
     display: flex;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--space-16);
+    margin-bottom: var(--space-32);
 }
 
 .statCard {
     background: var(--color-bg-secondary);
-    padding: var(--spacing-md);
-    border-radius: var(--radius-lg);
+    padding: var(--space-16);
+    border-radius: var(--radius-xl);
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: var(--space-4);
 }
 
 .icon {
     color: var(--color-accent);
-    margin-bottom: 4px;
 }
 
 .statValue {
-    font-size: var(--font-size-xxl);
+    font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-top: var(--space-4);
 }
 
 .statLabel {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-small);
     color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: var(--font-weight-semibold);
 }
 
 .topActivities {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    flex: 1.5;
+    gap: var(--space-12);
+    margin-top: var(--space-32);
 }
 
 .activityBadge {
     background: var(--color-bg-secondary);
-    padding: 12px 16px;
-    border-radius: var(--radius-lg);
+    padding: var(--space-16);
+    border-radius: var(--radius-xl);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: var(--shadow-sm);
 }
 
 .badgeIcon {
@@ -76,18 +79,16 @@
 }
 
 .badgeCount {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
 }
 
 .graphContainer {
     overflow-x: auto;
-    padding-bottom: var(--spacing-md);
+    padding: var(--space-16) 0;
     -webkit-overflow-scrolling: touch;
-    /* Hide scrollbar */
     scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 
 .graphContainer::-webkit-scrollbar {
@@ -96,21 +97,21 @@
 
 .graph {
     display: flex;
-    gap: 3px;
+    gap: 4px;
 }
 
 .column {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
 }
 
 .cell {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     border-radius: 2px;
     background-color: var(--color-bg-tertiary);
-    transition: opacity 0.2s;
+    transition: opacity var(--transition-fluid);
 }
 
 /* Intensity levels */
@@ -141,7 +142,8 @@
 
 .footer {
     text-align: center;
-    font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
-    margin-top: var(--spacing-lg);
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-32);
+    opacity: 0.6;
 }

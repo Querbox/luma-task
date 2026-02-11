@@ -1,49 +1,44 @@
 .container {
-    padding: var(--spacing-lg);
-    padding-top: calc(var(--safe-area-top) + var(--spacing-xl));
-    padding-bottom: calc(var(--tab-bar-height) + var(--spacing-xl));
-    min-height: 100vh;
+    padding: var(--space-20);
+    padding-bottom: 140px;
     background: var(--color-bg-primary);
 }
 
 .header {
-    margin-bottom: var(--spacing-xl);
+    padding-top: calc(var(--safe-area-top) + var(--space-32));
+    padding-bottom: var(--space-24);
 }
 
 .title {
-    font-size: var(--font-size-xxl);
+    font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
-    margin: 0;
     letter-spacing: -0.5px;
 }
 
 .subtitle {
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-body);
     color: var(--color-text-secondary);
-    margin-top: var(--spacing-xs);
+    margin-top: var(--space-4);
 }
 
 .section {
-    margin-bottom: var(--spacing-xxl);
+    margin-bottom: var(--space-32);
 }
 
 .sectionTitle {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-tertiary);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: var(--spacing-md);
-    padding-left: var(--spacing-xs);
+    margin-bottom: var(--space-8);
+    padding-left: var(--space-16);
 }
 
 .card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-xl);
     overflow: hidden;
 }
 
@@ -51,36 +46,36 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-md);
+    padding: var(--space-12) var(--space-16);
     background: transparent;
     border: none;
     width: 100%;
     color: var(--color-text-primary);
     cursor: pointer;
-    transition: background var(--transition-fast);
+    transition: background var(--transition-fluid);
     text-align: left;
 }
 
 .item:not(:last-child) {
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 0.5px solid var(--glass-border);
 }
 
 .item:active {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg-tertiary);
 }
 
 .itemContent {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--space-16);
 }
 
 .iconWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: var(--radius-sm);
     color: white;
 }
@@ -91,19 +86,18 @@
 }
 
 .itemName {
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
 }
 
 .itemDescription {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
 }
 
 .status {
-    font-size: var(--font-size-sm);
-    color: var(--color-success);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-secondary);
+    color: var(--color-accent);
 }
 
 .hiddenInput {
@@ -111,22 +105,9 @@
 }
 
 .infoBox {
-    margin-top: var(--spacing-md);
-    padding: var(--spacing-md);
-    border-radius: var(--radius-md);
-    background: var(--color-accent-subtle);
-    border: 1px solid rgba(0, 122, 255, 0.2);
-    display: flex;
-    gap: var(--spacing-md);
-}
-
-.infoIcon {
-    color: var(--color-accent);
-    flex-shrink: 0;
-}
-
-.infoText {
-    font-size: var(--font-size-sm);
+    margin-top: var(--space-12);
+    padding: var(--space-12) var(--space-16);
+    font-size: var(--font-size-small);
     color: var(--color-text-secondary);
-    line-height: 1.4;
+    line-height: var(--line-height-base);
 }

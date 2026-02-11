@@ -94,16 +94,16 @@ export const TaskDetailModal: React.FC = () => {
                                         value={input}
                                         onChange={(e) => setInput(e.target.value)}
                                         className={styles.textarea}
-                                        placeholder="Bearbeite deine Aufgabe..."
+                                        placeholder="Notizen hinzufügen..."
                                         autoFocus
                                     />
                                     <div className={styles.editActions}>
-                                        <Button variant="secondary" size="sm" onClick={() => setEditMode(false)}>
+                                        <button onClick={() => setEditMode(false)} className="text-secondary">
                                             Abbrechen
-                                        </Button>
-                                        <Button variant="primary" size="sm" onClick={handleUpdate}>
-                                            Speichern
-                                        </Button>
+                                        </button>
+                                        <button onClick={handleUpdate} style={{ color: 'var(--color-accent)', fontWeight: '600' }}>
+                                            Fertig
+                                        </button>
                                     </div>
                                 </div>
                             ) : (
@@ -113,36 +113,36 @@ export const TaskDetailModal: React.FC = () => {
                                         {task.dueDate && (
                                             <span className={styles.metaTag}>
                                                 <CalendarIcon size={14} />
-                                                {format(task.dueDate, 'eee, d. MMM HH:mm', { locale: de })}
+                                                {format(task.dueDate, 'd. MMMM yyyy', { locale: de })}
                                             </span>
                                         )}
                                         {task.recurrence && (
                                             <span className={styles.metaTag}>
                                                 <RotateCw size={14} />
-                                                Wiederkehrend
+                                                {task.recurrence.type === 'daily' ? 'Jeden Tag' : 'Wiederkehrend'}
                                             </span>
                                         )}
                                     </div>
-                                    <p className={styles.hint}>Tippe zum Bearbeiten</p>
+                                    <p className={styles.hint}>Tippen zum Bearbeiten</p>
                                 </div>
                             )}
 
                             <div className={styles.actions}>
-                                <Button
+                                <button
+                                    className={clsx(styles.actionBtn, task.isCompleted ? styles.active : '')}
+                                    onClick={handleToggle}
+                                >
+                                    <CheckCircle2 size={20} />
+                                    <span>{task.isCompleted ? 'Als unerledigt markieren' : 'Erledigen'}</span>
+                                </button>
+
+                                <button
                                     className={clsx(styles.actionBtn, styles.deleteBtn)}
                                     onClick={handleDelete}
                                 >
                                     <Trash2 size={20} />
                                     <span>Löschen</span>
-                                </Button>
-
-                                <Button
-                                    className={clsx(styles.actionBtn, task.isCompleted ? styles.active : '')}
-                                    onClick={handleToggle}
-                                >
-                                    <CheckCircle2 size={20} />
-                                    <span>{task.isCompleted ? 'Erledigt' : 'Erledigen'}</span>
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     </motion.div>

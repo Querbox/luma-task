@@ -7,12 +7,13 @@
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    /* Align top of content */
-    padding-top: 12px;
+    padding-top: var(--space-8);
     padding-bottom: var(--safe-area-bottom);
     z-index: 100;
     background: var(--glass-bg);
-    /* Ensure visible even if global glass class is missing */
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-top: 1px solid var(--glass-border);
 }
 
 .tabItem {
@@ -21,10 +22,13 @@
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: var(--color-text-tertiary);
-    /* Inactive state */
-    width: 60px;
-    transition: color var(--transition-short);
+    color: var(--color-text-secondary);
+    min-width: 64px;
+    transition: transform var(--transition-fluid);
+}
+
+.tabItem:active {
+    transform: scale(0.9);
 }
 
 .active {
@@ -34,5 +38,6 @@
 .label {
     font-size: 10px;
     font-weight: var(--font-weight-medium);
-    margin-top: 4px;
+    margin-top: var(--space-4);
+    letter-spacing: 0.1px;
 }

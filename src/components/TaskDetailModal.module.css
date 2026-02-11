@@ -177,6 +177,99 @@
     filter: invert(0.5);
 }
 
+/* Reminder Picker */
+.reminderPicker {
+    padding: 16px;
+    background: var(--color-bg-secondary);
+    border-top: 0.5px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pickerHeader {
+    text-align: center;
+    padding-bottom: 8px;
+}
+
+.pickerTitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.quickOptions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quickBtn {
+    flex: 1;
+    min-width: calc(50% - 4px);
+    padding: 12px 16px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quickBtn:active {
+    background: var(--color-bg-primary);
+    transform: scale(0.97);
+}
+
+.customPicker {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pickerLabel {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.removeReminderBtn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #FF3B30;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.removeReminderBtn:active {
+    background: rgba(255, 59, 48, 0.1);
+}
+
+.cancelBtn {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelBtn:active {
+    background: var(--color-bg-primary);
+}
+
+
 /* Actions */
 .actions {
     display: flex;

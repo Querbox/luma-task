@@ -60,6 +60,23 @@ export const TaskDetailModal: React.FC = () => {
         setShowReminderPicker(false);
     };
 
+    const handleQuickReminder = async (minutes: number) => {
+        const reminderDate = new Date(Date.now() + minutes * 60 * 1000);
+        await updateTask(task.id, {
+            reminderDate: reminderDate.getTime(),
+            hasReminder: true
+        });
+        setShowReminderPicker(false);
+    };
+
+    const handleRemoveReminder = async () => {
+        await updateTask(task.id, {
+            hasReminder: false,
+            reminderDate: undefined
+        });
+        setShowReminderPicker(false);
+    };
+
     const handleDelete = async () => {
         if (confirm('Aufgabe wirklich löschen?')) {
             await deleteTask(task.id);
@@ -180,13 +197,66 @@ export const TaskDetailModal: React.FC = () => {
                                 </button>
 
                                 {showReminderPicker && (
-                                    <div className={styles.pickerRow}>
-                                        <input
-                                            type="datetime-local"
-                                            className={styles.picker}
-                                            defaultValue={task.reminderDate ? format(task.reminderDate, "yyyy-MM-dd'T'HH:mm") : ''}
-                                            onChange={(e) => handleReminderDateChange(e.target.value)}
-                                        />
+                                    <div className={styles.reminderPicker}>
+                                        <div className={styles.pickerHeader}>
+                                            <span className={styles.pickerTitle}>Erinnerung einstellen</span>
+                                        </div>
+
+                                        {/* Quick options */}
+                                        <div className={styles.quickOptions}>
+                                            <button
+                                                className={styles.quickBtn}
+                                                onClick={() => handleQuickReminder(60)}
+                                            >
+                                                In 1 Stunde
+                                            </button>
+                                            <button
+                                                className={styles.quickBtn}
+                                                onClick={() => handleQuickReminder(180)}
+                                            >
+                                                In 3 Stunden
+                                            </button>
+                                            <button
+                                                className={styles.quickBtn}
+                                                onClick={() => {
+                                                    const tomorrow = new Date();
+                                                    tomorrow.setDate(tomorrow.getDate() + 1);
+                                                    tomorrow.setHours(8, 0, 0, 0);
+                                                    const minutesUntil = Math.floor((tomorrow.getTime() - Date.now()) / (60 * 1000));
+                                                    handleQuickReminder(minutesUntil);
+                                                }}
+                                            >
+                                                Morgen früh (8:00)
+                                            </button>
+                                        </div>
+
+                                        {/* Custom datetime */}
+                                        <div className={styles.customPicker}>
+                                            <label className={styles.pickerLabel}>Oder wähle ein Datum:</label>
+                                            <input
+                                                type="datetime-local"
+                                                className={styles.picker}
+                                                defaultValue={task.reminderDate ? format(task.reminderDate, "yyyy-MM-dd'T'HH:mm") : ''}
+                                                onChange={(e) => handleReminderDateChange(e.target.value)}
+                                            />
+                                        </div>
+
+                                        {/* Actions */}
+                                        {task.hasReminder && (
+                                            <button
+                                                className={styles.removeReminderBtn}
+                                                onClick={handleRemoveReminder}
+                                            >
+                                                Erinnerung entfernen
+                                            </button>
+                                        )}
+
+                                        <button
+                                            className={styles.cancelBtn}
+                                            onClick={() => setShowReminderPicker(false)}
+                                        >
+                                            Abbrechen
+                                        </button>
                                     </div>
                                 )}
                             </div>

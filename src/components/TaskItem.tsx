@@ -24,12 +24,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     onToggle,
     onUpdate,
     onDelete,
-    onSelect,
     suggestion
 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(task.title);
-    const [preview, setPreview] = useState<{ date?: Date; recurrence?: any; icon?: string } | null>(null);
+    const [preview, setPreview] = useState<{ date?: Date; recurrence?: any; icon?: string; tags?: string[] } | null>(null);
     const [showIconPicker, setShowIconPicker] = useState(false);
     const controls = useAnimation();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -59,7 +58,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         setPreview({
             date: parsed.date,
             recurrence: parsed.recurrence,
-            icon: parsed.icon
+            icon: parsed.icon,
+            tags: parsed.tags
         });
     };
 
@@ -70,7 +70,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                 title: parsed.title,
                 dueDate: parsed.date?.getTime() || task.dueDate,
                 recurrence: parsed.recurrence || task.recurrence,
-                icon: parsed.icon || task.icon
+                icon: parsed.icon || task.icon,
+                tags: parsed.tags || task.tags
             });
         }
         setIsEditing(false);
@@ -157,6 +158,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                                 {formatDate(preview?.date?.getTime() || task.dueDate)}
                             </span>
                         )}
+                        {(preview?.tags || task.tags)?.map(tag => (
+                            <span key={tag} className={styles.tag}>#{tag}</span>
+                        ))}
                         {task.recurrence && !preview?.recurrence && (
                             <span className={styles.tag}>Wiederkehrend</span>
                         )}

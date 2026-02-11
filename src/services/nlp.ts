@@ -1,4 +1,4 @@
-import { addDays, setHours, setMinutes, nextDay } from 'date-fns';
+import { addDays, setHours, setMinutes } from 'date-fns';
 
 interface ParsedTask {
     title: string;
@@ -9,7 +9,35 @@ interface ParsedTask {
         daysOfWeek?: number[];
     };
     icon?: string;
+    tags?: string[];
 }
+
+const TAG_KEYWORDS: { [key: string]: string } = {
+    'frühstück': 'Frühstück',
+    'breakfast': 'Frühstück',
+    'mittag': 'Mittagessen',
+    'lunch': 'Mittagessen',
+    'abendessen': 'Abendessen',
+    'dinner': 'Abendessen',
+    'gym': 'Fitness',
+    'fitness': 'Fitness',
+    'sport': 'Fitness',
+    'training': 'Fitness',
+    'termin': 'Termin',
+    'appointment': 'Termin',
+    'meeting': 'Termin',
+    'arbeit': 'Arbeit',
+    'work': 'Arbeit'
+};
+
+const extractTags = (input: string): string[] => {
+    const lower = input.toLowerCase();
+    const tags = new Set<string>();
+    for (const [key, tag] of Object.entries(TAG_KEYWORDS)) {
+        if (lower.includes(key)) tags.add(tag);
+    }
+    return Array.from(tags);
+};
 
 const ICON_MAP: { [key: string]: string } = {
     'gym': '🏋️',
@@ -51,15 +79,6 @@ const getIconForTitle = (title: string): string | undefined => {
     return undefined;
 };
 
-const WEEKDAYS_DE: { [key: string]: number } = {
-    'sonntag': 0, 'montag': 1, 'dienstag': 2, 'mittwoch': 3, 'donnerstag': 4, 'freitag': 5, 'samstag': 6,
-    'so': 0, 'mo': 1, 'di': 2, 'mi': 3, 'do': 4, 'fr': 5, 'sa': 6
-};
-
-const WEEKDAYS_EN: { [key: string]: number } = {
-    'sunday': 0, 'monday': 1, 'tuesday': 2, 'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6,
-    'sun': 0, 'mon': 1, 'tue': 2, 'wed': 3, 'thu': 4, 'fri': 5, 'sat': 6
-};
 
 export const parseTaskInput = (input: string): ParsedTask => {
     let title = input;
@@ -72,9 +91,12 @@ export const parseTaskInput = (input: string): ParsedTask => {
     const consume = (pattern: RegExp | string) => {
         title = title.replace(pattern, '').trim();
         // Clean up prepositions
-        title = title.replace(/\s+(am|um|im|in|at|on|every|jede[nr]?)\s*$/i, '');
+        title = title.replace(/\b(am|um|im|in|at|on|every|jede[nr]?|zum|zur|beim|beon)\s*$/i, '');
         title = title.replace(/\s+/g, ' ');
     };
+
+    // --- Tags (Pre-extraction) ---
+    const tags = extractTags(input);
 
     // --- Recurrence ---
     const dailyMatch = lower.match(/(jeden tag|täglich|every day|daily)/);
@@ -86,17 +108,6 @@ export const parseTaskInput = (input: string): ParsedTask => {
     } else if (weeklyMatch) {
         recurrence = { type: 'weekly' };
         consume(weeklyMatch[0]);
-    } else {
-        const everyDayMatch = lower.match(/(jeden|every)\s+([a-zäöü]+)/);
-        if (everyDayMatch) {
-            const dayStr = everyDayMatch[2];
-            const dayIndex = WEEKDAYS_DE[dayStr] ?? WEEKDAYS_EN[dayStr];
-            if (dayIndex !== undefined) {
-                recurrence = { type: 'weekly', daysOfWeek: [dayIndex] };
-                if (!date) date = nextDay(now, dayIndex as any);
-                consume(everyDayMatch[0]);
-            }
-        }
     }
 
     // --- Dates ---
@@ -109,24 +120,9 @@ export const parseTaskInput = (input: string): ParsedTask => {
     } else if (lower.match(/\b(heute|today)\b/)) {
         date = now;
         consume(/\b(heute|today)\b/i);
-    } else if (lower.match(/\b(nächste woche|next week)\b/)) {
-        date = addDays(now, 7);
-        consume(/\b(nächste woche|next week)\b/i);
-    }
-
-    // Weekdays
-    const allWeekdays = { ...WEEKDAYS_DE, ...WEEKDAYS_EN };
-    for (const [dayName, dayIndex] of Object.entries(allWeekdays)) {
-        const regex = new RegExp(`\\b(am\\s+|on\\s+|next\\s+|nächsten\\s+)?${dayName}\\b`, 'i');
-        if (regex.test(title)) {
-            date = nextDay(now, dayIndex as any);
-            consume(regex);
-            break;
-        }
     }
 
     // --- Time ---
-    // Explicit: 14:00, 14.30, 2pm, 14 Uhr
     const timeMatch = title.match(/\b(\d{1,2})(:|\.)(\d{2})\b/) ||
         title.match(/\b(\d{1,2})\s*(uhr|pm|am)\b/i);
 
@@ -134,8 +130,8 @@ export const parseTaskInput = (input: string): ParsedTask => {
         let h = parseInt(timeMatch[1], 10);
         let m = timeMatch[3] ? parseInt(timeMatch[3], 10) : 0;
 
-        if (timeMatch[2]?.toLowerCase() === 'pm' && h < 12) h += 12;
-        if (timeMatch[2]?.toLowerCase() === 'am' && h === 12) h = 0;
+        if (timeMatch[0].toLowerCase().includes('pm') && h < 12) h += 12;
+        if (timeMatch[0].toLowerCase().includes('am') && h === 12) h = 0;
 
         if (date) {
             date = setHours(setMinutes(date, m), h);
@@ -146,27 +142,40 @@ export const parseTaskInput = (input: string): ParsedTask => {
         consume(timeMatch[0]);
     }
 
-    // Keywords
-    if (lower.match(/\b(abends|evening|tonight)\b/)) {
-        if (!date) date = now;
-        date = setHours(setMinutes(date, 0), 19);
-        consume(/\b(abends|evening|tonight|am abend)\b/i);
-    } else if (lower.match(/\b(morgens|morning)\b/)) {
+    // Keywords (morgens, abends, etc.)
+    if (lower.match(/\b(morgens|morning|früh)\b/)) {
         if (!date) date = addDays(now, 1);
-        date = setHours(setMinutes(date, 0), 8);
-        consume(/\b(morgens|morning|am morgen)\b/i);
-    } else if (lower.match(/\b(mittags|noon)\b/)) {
+        // If time was already set (e.g. 7 Uhr morgens), don't override h/m but keep date
+        if (!timeMatch) {
+            date = setHours(setMinutes(date, 0), 8);
+        }
+        consume(/\b(morgens|morning|früh|am morgen|in der früh)\b/i);
+    } else if (lower.match(/\b(abends|evening|tonight)\b/)) {
         if (!date) date = now;
-        date = setHours(setMinutes(date, 0), 12);
-        consume(/\b(mittags|noon)\b/i);
+        if (!timeMatch) {
+            date = setHours(setMinutes(date, 0), 19);
+        }
+        consume(/\b(abends|evening|tonight|am abend)\b/i);
     }
 
-    const finalTitle = title.trim().replace(/^([,.\- ]+)|([,.\- ]+)$/g, '');
+    // Cleanup Tag Keywords from Title if they are just descriptive
+    for (const key of Object.keys(TAG_KEYWORDS)) {
+        const regex = new RegExp(`\\b(zum|zur|beim|für|for|at|on)?\\s*${key}\\b`, 'i');
+        if (regex.test(title)) {
+            consume(regex);
+        }
+    }
+
+    const finalTitle = title.trim()
+        .replace(/^([,.\- ]+)|([,.\- ]+)$/g, '')
+        .replace(/\b(am|um|im|in|zum|zur|beim)\s*$/i, '')
+        .trim();
 
     return {
         title: finalTitle,
         date,
         recurrence,
-        icon: getIconForTitle(finalTitle)
+        icon: getIconForTitle(input), // Use full input for icon detection
+        tags
     };
 };

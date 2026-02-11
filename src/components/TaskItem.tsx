@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, type PanInfo, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion, type PanInfo, useAnimation, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { Check, Trash2, Calendar } from 'lucide-react';
@@ -21,6 +21,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     onSelect
 }) => {
     const controls = useAnimation();
+    const x = useMotionValue(0);
+
+    // Derived values for backgrounds
+    const completeOpacity = useTransform(x, [0, 60], [0, 1]);
+    const deleteOpacity = useTransform(x, [0, -60], [0, 1]);
 
     const handleDragEnd = async (_event: any, info: PanInfo) => {
         if (info.offset.x > 80) {
@@ -44,18 +49,25 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
     return (
         <div className={styles.container}>
-            <div className={clsx(styles.actionBackground, styles.completeAction)} style={{ opacity: 1 }}>
+            <motion.div
+                className={clsx(styles.actionBackground, styles.completeAction)}
+                style={{ opacity: completeOpacity }}
+            >
                 <Check size={20} strokeWidth={2.5} />
-            </div>
-            <div className={clsx(styles.actionBackground, styles.deleteAction)} style={{ opacity: 1 }}>
+            </motion.div>
+            <motion.div
+                className={clsx(styles.actionBackground, styles.deleteAction)}
+                style={{ opacity: deleteOpacity }}
+            >
                 <Trash2 size={20} strokeWidth={2} />
-            </div>
+            </motion.div>
 
             <motion.div
                 drag="x"
                 dragConstraints={{ left: -100, right: 100 }}
                 dragElastic={0.15}
                 onDragEnd={handleDragEnd}
+                style={{ x }}
                 animate={controls}
                 className={clsx(styles.item, task.isCompleted && styles.completed)}
                 onClick={() => onSelect(task.id)}

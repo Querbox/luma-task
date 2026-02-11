@@ -12,7 +12,7 @@ export const TabBar: React.FC = () => {
                 className={({ isActive }) => clsx(styles.tabItem, isActive && styles.active)}
             >
                 <List size={22} />
-                <span className={styles.label}>Focus</span>
+                <span className={styles.label}>Heute</span>
             </NavLink>
 
             <NavLink

@@ -54,7 +54,7 @@ export const Focus: React.FC = () => {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Today</h1>
+                    <h1 className={styles.title}>Heute</h1>
                     <p className={styles.subtitle}>{new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
                 </div>
                 {isSupported && permission !== 'granted' && (

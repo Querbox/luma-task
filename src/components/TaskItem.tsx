@@ -42,9 +42,12 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     const formatDate = (timestamp?: number) => {
         if (!timestamp) return null;
         const date = new Date(timestamp);
-        if (isToday(date)) return 'Heute';
-        if (isTomorrow(date)) return 'Morgen';
-        return format(date, 'eee, d. MMM', { locale: de });
+        const timeStr = format(date, ' HH:mm');
+        const displayTime = timeStr === ' 00:00' ? '' : timeStr;
+
+        if (isToday(date)) return `Heute${displayTime}`;
+        if (isTomorrow(date)) return `Morgen${displayTime}`;
+        return format(date, `eee, d. MMM${displayTime}`, { locale: de });
     };
 
     return (

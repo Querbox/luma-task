@@ -78,10 +78,10 @@ export const parseTaskInput = (input: string): ParsedTask => {
     const now = new Date();
 
     const consume = (pattern: RegExp | string) => {
-        title = title.replace(pattern, '').trim();
-        // Clean up prepositions and connectors
-        const preps = /\b(am|um|im|in|at|on|every|jede[nr]?|zum|zur|beim|beon|mit|with|starting|ab|seit|until|bis)\s*$/i;
-        title = title.replace(preps, '').trim();
+        title = title.replace(pattern, ' ').trim();
+        // Clean up prepositions only when they are left dangling at the edges or double spaces
+        const edgePreps = /^\s*\b(am|um|im|in|at|on|zum|zur|beim|mit|ab|bis)\b|\b(am|um|im|in|at|on|zum|zur|beim|mit|ab|bis)\b\s*$/gi;
+        title = title.replace(edgePreps, ' ').trim();
         title = title.replace(/\s+/g, ' ');
     };
 
@@ -169,7 +169,7 @@ export const parseTaskInput = (input: string): ParsedTask => {
     ];
 
     for (const kw of keywords) {
-        if (kw.regex.test(lower)) {
+        if (kw.regex.test(title.toLowerCase())) { // Test against current title, not static lower
             if (!date) date = now;
             if (!timeMatch) date = setHours(setMinutes(date, 0), kw.h);
             consume(kw.regex);
@@ -182,10 +182,15 @@ export const parseTaskInput = (input: string): ParsedTask => {
         if (regex.test(title)) consume(regex);
     }
 
-    const finalTitle = title.trim()
+    let finalTitle = title.trim()
         .replace(/^([,.\- ]+)|([,.\- ]+)$/g, '')
-        .replace(/\b(am|um|im|in|zum|zur|beim|für|for|mit|with|ab|bis|on|at)\s*$/i, '')
+        .replace(/\b(am|um|im|in|zum|zur|beim|für|for|mit|with|ab|bis|on|at|ins)\s*$/i, '')
         .trim();
+
+    // Capitalize first letter
+    if (finalTitle.length > 0) {
+        finalTitle = finalTitle.charAt(0).toUpperCase() + finalTitle.slice(1);
+    }
 
     return {
         title: finalTitle || input, // Fallback to raw if empty

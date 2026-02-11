@@ -162,10 +162,20 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                             <span key={tag} className={styles.tag}>#{tag}</span>
                         ))}
                         {task.recurrence && !preview?.recurrence && (
-                            <span className={styles.tag}>Wiederkehrend</span>
+                            <span className={styles.tag}>
+                                {task.recurrence.type === 'daily' ? 'Täglich' :
+                                    task.recurrence.type === 'weekly' ? 'Wöchentlich' :
+                                        task.recurrence.type === 'biweekly' ? 'Alle 2 Wochen' :
+                                            task.recurrence.type === 'monthly' ? 'Monatlich' : 'Wiederkehrend'}
+                            </span>
                         )}
                         {preview?.recurrence && (
-                            <span className={clsx(styles.tag, styles.previewTag)}>Wird wiederkehrend</span>
+                            <span className={clsx(styles.tag, styles.previewTag)}>
+                                {preview.recurrence.type === 'daily' ? 'Wird täglich' :
+                                    preview.recurrence.type === 'weekly' ? 'Wird wöchentlich' :
+                                        preview.recurrence.type === 'biweekly' ? 'Wird alle 2 Wochen' :
+                                            preview.recurrence.type === 'monthly' ? 'Wird monatlich' : 'Wird wiederkehrend'}
+                            </span>
                         )}
                     </div>
                 </div>

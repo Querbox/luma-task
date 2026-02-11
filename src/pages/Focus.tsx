@@ -5,14 +5,13 @@ import { TaskItem } from '../components/TaskItem';
 import { TaskInput } from '../components/TaskInput';
 import { isToday, isPast, addDays, isWithinInterval, startOfDay } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
-import { analyzeTasks } from '../services/intelligenceService';
 import styles from './Focus.module.css';
 
 export const Focus: React.FC = () => {
-    const { tasks, addTask, toggleTask, updateTask, deleteTask, loading, setSelectedTaskId } = useTasks();
+    const { tasks, addTask, toggleTask, deleteTask, loading, setSelectedTaskId } = useTasks();
     const { permission, requestPermission, isSupported } = useNotifications();
 
-    const suggestion = useMemo(() => analyzeTasks(tasks), [tasks]);
+
 
     const groups = useMemo(() => {
         const today = startOfDay(new Date());
@@ -78,10 +77,8 @@ export const Focus: React.FC = () => {
                                     key={task.id}
                                     task={task}
                                     onToggle={toggleTask}
-                                    onUpdate={updateTask}
                                     onDelete={deleteTask}
                                     onSelect={setSelectedTaskId}
-                                    suggestion={suggestion?.id === `recurring-${task.title.toLowerCase()}` ? suggestion : null}
                                 />
                             ))}
                         </AnimatePresence>
@@ -101,7 +98,6 @@ export const Focus: React.FC = () => {
                                     key={task.id}
                                     task={task}
                                     onToggle={toggleTask}
-                                    onUpdate={updateTask}
                                     onDelete={deleteTask}
                                     onSelect={setSelectedTaskId}
                                 />
@@ -119,7 +115,6 @@ export const Focus: React.FC = () => {
                                     key={task.id}
                                     task={task}
                                     onToggle={toggleTask}
-                                    onUpdate={updateTask}
                                     onDelete={deleteTask}
                                     onSelect={setSelectedTaskId}
                                 />

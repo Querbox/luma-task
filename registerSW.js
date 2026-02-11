@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/luma-task/sw.js', { scope: '/luma-task/' })})}

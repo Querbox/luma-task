@@ -32,7 +32,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             onToggle(task.id);
             await controls.start({ x: 0 });
         } else if (info.offset.x < -80) {
-            onDelete(task.id);
+            if (window.confirm('Aufgabe wirklich löschen?')) {
+                onDelete(task.id);
+            }
             await controls.start({ x: 0 });
         } else {
             controls.start({ x: 0 });

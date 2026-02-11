@@ -177,10 +177,9 @@ export const parseTaskInput = (input: string): ParsedTask => {
     }
 
     // --- Cleanup Title ---
-    for (const tagKey of Object.keys(TAG_KEYWORDS)) {
-        const regex = new RegExp(`\\b(zum|zur|beim|für|for|at|on)?\\s*${tagKey}\\b`, 'i');
-        if (regex.test(title)) consume(regex);
-    }
+    // Note: We no longer remove TAG_KEYWORDS from the title here, 
+    // because keywords like "Gym" or "Arbeit" are meaningful parts of the task.
+    // We only clean up dangling prepositions.
 
     let finalTitle = title.trim()
         .replace(/^([,.\- ]+)|([,.\- ]+)$/g, '')

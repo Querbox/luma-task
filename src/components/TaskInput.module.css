@@ -35,6 +35,9 @@
     padding: var(--space-8) 0;
     color: var(--color-text-primary);
     font-weight: 400;
+    border: none;
+    outline: none;
+    background: transparent;
 }
 
 .input::placeholder {

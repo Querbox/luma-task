@@ -91,6 +91,12 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0, opacity: 0 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    lineHeight: 1
+                                }}
                             >
                                 <Check size={14} strokeWidth={3} />
                             </motion.div>

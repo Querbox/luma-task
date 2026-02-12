@@ -4,9 +4,11 @@
     justify-content: center;
     border-radius: var(--radius-full);
     font-weight: var(--font-weight-semibold);
-    transition: background-color var(--transition-fast), color var(--transition-fast);
+    transition: background-color 0.15s ease, color 0.15s ease;
     cursor: pointer;
     user-select: none;
+    border: none;
+    outline: none;
 }
 
 /* Variants */
@@ -36,26 +38,22 @@
     background-color: transparent;
     color: var(--color-text-primary);
     padding: 0;
+    width: 44px;
+    height: 44px;
 }
 
 /* Sizes */
 .sm {
     padding: 8px 16px;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-small);
 }
 
 .md {
     padding: 12px 24px;
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-body);
 }
 
 .lg {
     padding: 16px 32px;
-    font-size: var(--font-size-lg);
-}
-
-.icon {
-    width: 44px;
-    /* Apple Hit Target */
-    height: 44px;
+    font-size: var(--font-size-body);
 }

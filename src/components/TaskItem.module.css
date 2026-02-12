@@ -24,14 +24,17 @@
     flex-shrink: 0;
     width: 24px;
     height: 24px;
+    aspect-ratio: 1;
     border-radius: var(--radius-full);
     border: 2px solid var(--color-text-tertiary);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    color: transparent;
+    color: white;
     background: transparent;
+    line-height: 1;
 }
 
 .checkbox:active {

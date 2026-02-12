@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { TabBar } from './TabBar';
 import { useNotifications } from '../hooks/useNotifications';
 import { TaskDetailModal } from './TaskDetailModal';
+import { LoadingScreen } from './LoadingScreen';
 import styles from './Layout.module.css';
 
 export const Layout: React.FC = () => {
@@ -14,6 +15,7 @@ export const Layout: React.FC = () => {
             </main>
             <TabBar />
             <TaskDetailModal />
+            <LoadingScreen />
         </div>
     );
 };

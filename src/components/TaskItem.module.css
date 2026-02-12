@@ -8,12 +8,15 @@
     display: flex;
     align-items: center;
     gap: var(--space-16);
-    padding: var(--space-14) var(--space-4);
-    min-height: 60px;
+    padding: var(--space-12) var(--space-16);
+    min-height: 56px;
     background: transparent;
-    border-bottom: 0.5px solid var(--glass-border);
+    border: none;
+    outline: none;
     transition: background 0.15s ease;
     cursor: pointer;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-8);
 }
 
 .item:active {
@@ -22,8 +25,8 @@
 
 .checkbox {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     aspect-ratio: 1;
     border-radius: var(--radius-full);
     border: 2px solid var(--color-text-tertiary);
@@ -35,6 +38,8 @@
     color: white;
     background: transparent;
     line-height: 1;
+    cursor: pointer;
+    outline: none;
 }
 
 .checkbox:active {

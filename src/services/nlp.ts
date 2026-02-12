@@ -95,12 +95,51 @@ export const parseTaskInput = (input: string): ParsedTask => {
     } else if (lower.match(/(jede woche|wöchentlich|every week|weekly)/)) {
         recurrence = { type: 'weekly' };
         consume(/(jede woche|wöchentlich|every week|weekly)/i);
-    } else if (lower.match(/(alle zwei wochen|biweekly|every 2 weeks)/)) {
+    } else if (lower.match(/(alle zwei wochen|biweekly|every 2 weeks|alle 2 wochen)/)) {
         recurrence = { type: 'biweekly' };
-        consume(/(alle zwei wochen|biweekly|every 2 weeks)/i);
+        consume(/(alle zwei wochen|biweekly|every 2 weeks|alle 2 wochen)/i);
     } else if (lower.match(/(jeden monat|monatlich|every month|monthly)/)) {
         recurrence = { type: 'monthly' };
         consume(/(jeden monat|monatlich|every month|monthly)/i);
+    } else if (lower.match(/(jedes?year|jährlich|yearly|every year|annually)/)) {
+        recurrence = { type: 'custom', interval: 12 };
+        consume(/(jedes?year|jährlich|yearly|every year|annually)/i);
+    }
+
+    // --- Every X days/weeks/months ---
+    const everyXMatch = lower.match(/\balle?\s+(\d+)\s*(tagen?|wochen?|monaten?|days?|weeks?|months?)\b/);
+    if (everyXMatch && !recurrence) {
+        const amount = parseInt(everyXMatch[1], 10);
+        const unit = everyXMatch[2].toLowerCase();
+        if (unit.startsWith('tag') || unit.startsWith('day')) {
+            recurrence = { type: 'custom', interval: amount };
+        } else if (unit.startsWith('woch') || unit.startsWith('week')) {
+            recurrence = { type: 'custom', interval: amount * 7 };
+        } else if (unit.startsWith('monat') || unit.startsWith('month')) {
+            recurrence = { type: 'monthly' };
+        }
+        consume(everyXMatch[0]);
+    }
+
+    // --- Weekly specific weekdays (jeden Montag, every Monday) ---
+    const specificWeekdayMatch = lower.match(/\b(jeden?|every|jede?|alle?)?\s*(montag|monday|dienstag|tuesday|mittwoch|wednesday|donnerstag|thursday|freitag|friday|samstag|saturday|sonntag|sunday)/i);
+    if (specificWeekdayMatch && !recurrence) {
+        const dayName = specificWeekdayMatch[2].toLowerCase();
+        for (const [key, dayIdx] of Object.entries(WEEKDAYS)) {
+            if (dayName.includes(key.slice(0, 3))) {
+                recurrence = { type: 'weekly', daysOfWeek: [dayIdx] };
+                date = nextDay(now, dayIdx as any);
+                break;
+            }
+        }
+        consume(specificWeekdayMatch[0]);
+    }
+
+    // --- Weekend (jedes Wochenende) ---
+    if (lower.match(/\b(jedes?|every)?\s*(wochenende|weekend)\b/) && !recurrence) {
+        recurrence = { type: 'weekly', daysOfWeek: [6] }; // Saturday + Sunday would be handled separately
+        date = nextDay(now, 6); // Next Saturday
+        consume(/\b(jedes?|every)?\s*(wochenende|weekend)\b/i);
     }
 
     // --- Relatives (In X days/weeks) ---

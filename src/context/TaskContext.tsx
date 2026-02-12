@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Task, NewTask } from '../types';
 import { taskService } from '../services/taskService';
+import { learningEngine } from '../services/learning';
 import { useNotification } from './NotificationContext';
 
 interface TaskContextType {
@@ -44,6 +45,17 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const newTask = await taskService.add(task);
         setTasks(prev => [...prev, newTask]);
         showToast('Aufgabe hinzugefügt', 'success');
+
+        // Record learning event
+        const dayOfWeek = new Date(task.dueDate || Date.now()).getDay();
+        learningEngine.recordEvent({
+            taskId: newTask.id,
+            title: newTask.title,
+            type: 'created',
+            timestamp: Date.now(),
+            metadata: { dayOfWeek }
+        });
+
         return newTask;
     };
 
@@ -58,6 +70,20 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setTasks(prev => prev.map(t => t.id === id ? updated : t));
             if (newStatus) {
                 showToast('Aufgabe abgeschlossen', 'success');
+
+                // Record completion event
+                const now = new Date();
+                learningEngine.recordEvent({
+                    taskId: id,
+                    title: task.title,
+                    type: 'completed',
+                    timestamp: Date.now(),
+                    completedAt: Date.now(),
+                    metadata: {
+                        dayOfWeek: now.getDay(),
+                        hourOfCompletion: now.getHours()
+                    }
+                });
             }
         }
     };

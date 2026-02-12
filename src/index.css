@@ -29,7 +29,8 @@
 html,
 body,
 #root {
-  height: 100%;
+  /* Use dynamic viewport height to avoid 100vh bugs on mobile browsers */
+  min-height: 100dvh;
   width: 100%;
 }
 

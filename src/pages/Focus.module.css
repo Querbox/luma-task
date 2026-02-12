@@ -69,7 +69,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* Use dynamic viewport height to avoid mobile browser UI resizing issues */
+    height: 100dvh;
     color: var(--color-text-secondary);
 }
 

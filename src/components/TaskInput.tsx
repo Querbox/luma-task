@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Send, Plus, Calendar as CalendarIcon, RotateCw } from 'lucide-react';
 import { parseTaskInput } from '../services/nlp'; // We need to fix the import path potentially? No, same src structure.
 import type { NewTask } from '../types';
@@ -15,6 +15,8 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
     const [input, setInput] = useState('');
     const [parsedPreview, setParsedPreview] = useState<ReturnType<typeof parseTaskInput> | null>(null);
     const [isFocused, setIsFocused] = useState(false);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const wrapperRef = useRef<HTMLFormElement | null>(null);
 
     useEffect(() => {
         if (input.trim()) {
@@ -42,13 +44,53 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
         setParsedPreview(null);
     };
 
+    useEffect(() => {
+        const inputEl = inputRef.current;
+        if (!inputEl) return;
+
+        const scrollContentAboveInput = () => {
+            // When keyboard opens, scroll the scrollable main container upward
+            // so the TaskInput (fixed at bottom) remains visible above the keyboard
+            const mainScroller = document.querySelector('[class*="Layout_main"]') as HTMLElement;
+            if (mainScroller) {
+                // Push content upward to ensure no overlap with keyboard
+                mainScroller.scrollTop = mainScroller.scrollHeight;
+            }
+        };
+
+        const onFocus = () => {
+            // Trigger scroll with a small delay to let keyboard appear
+            setTimeout(scrollContentAboveInput, 100);
+        };
+
+        const onVisualViewport = () => {
+            // Re-trigger scroll when visual viewport changes (keyboard open/close)
+            scrollContentAboveInput();
+        };
+
+        inputEl.addEventListener('focus', onFocus);
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', onVisualViewport);
+        }
+
+        return () => {
+            inputEl.removeEventListener('focus', onFocus);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', onVisualViewport);
+            }
+        };
+    }, []);
+
     return (
         <form
+            ref={wrapperRef}
             className={clsx(styles.container, isFocused && styles.focused, 'glass')}
             onSubmit={handleSubmit}
         >
             <div className={styles.inputWrapper}>
                 <input
+                    ref={inputRef}
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}

@@ -15,6 +15,7 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
     const [input, setInput] = useState('');
     const [parsedPreview, setParsedPreview] = useState<ReturnType<typeof parseTaskInput> | null>(null);
     const [isFocused, setIsFocused] = useState(false);
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const wrapperRef = useRef<HTMLFormElement | null>(null);
 
@@ -46,38 +47,38 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
 
     useEffect(() => {
         const inputEl = inputRef.current;
-        if (!inputEl) return;
+        const wrapperEl = wrapperRef.current;
+        if (!inputEl || !wrapperEl) return;
 
-        const scrollContentAboveInput = () => {
-            // When keyboard opens, scroll the scrollable main container upward
-            // so the TaskInput (fixed at bottom) remains visible above the keyboard
-            const mainScroller = document.querySelector('[class*="Layout_main"]') as HTMLElement;
-            if (mainScroller) {
-                // Push content upward to ensure no overlap with keyboard
-                mainScroller.scrollTop = mainScroller.scrollHeight;
-            }
+        const updateKeyboardOffset = () => {
+            if (!window.visualViewport) return;
+
+            // Calculate how much space the keyboard is taking
+            const viewport = window.visualViewport;
+            const windowHeight = window.innerHeight;
+            const visibleHeight = viewport.height;
+            const keyboardSize = windowHeight - visibleHeight;
+
+            setKeyboardHeight(Math.max(0, keyboardSize));
         };
 
-        const onFocus = () => {
-            // Trigger scroll with a small delay to let keyboard appear
-            setTimeout(scrollContentAboveInput, 100);
-        };
+        inputEl.addEventListener('focus', () => {
+            setTimeout(updateKeyboardOffset, 50);
+        });
 
-        const onVisualViewport = () => {
-            // Re-trigger scroll when visual viewport changes (keyboard open/close)
-            scrollContentAboveInput();
-        };
-
-        inputEl.addEventListener('focus', onFocus);
+        inputEl.addEventListener('blur', () => {
+            setKeyboardHeight(0);
+        });
 
         if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', onVisualViewport);
+            window.visualViewport.addEventListener('resize', updateKeyboardOffset);
         }
 
         return () => {
-            inputEl.removeEventListener('focus', onFocus);
+            inputEl.removeEventListener('focus', updateKeyboardOffset);
+            inputEl.removeEventListener('blur', () => {});
             if (window.visualViewport) {
-                window.visualViewport.removeEventListener('resize', onVisualViewport);
+                window.visualViewport.removeEventListener('resize', updateKeyboardOffset);
             }
         };
     }, []);
@@ -86,6 +87,10 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
         <form
             ref={wrapperRef}
             className={clsx(styles.container, isFocused && styles.focused, 'glass')}
+            style={{
+                transform: keyboardHeight > 0 ? `translateY(-${Math.min(keyboardHeight, 150)}px)` : 'translateY(0)',
+                transition: keyboardHeight === 0 ? 'transform 0.2s ease-out' : 'transform 0.1s linear'
+            }}
             onSubmit={handleSubmit}
         >
             <div className={styles.inputWrapper}>

@@ -16,6 +16,8 @@ struct ExportableTask: Codable {
     let tags: [String]?
     let hasReminder: Bool?
     let reminderDate: Double?
+    let priority: Int?
+    let notes: String?
 
     init(from task: LumaTask) {
         self.id = task.id.uuidString
@@ -32,6 +34,8 @@ struct ExportableTask: Codable {
         self.tags = task.tags
         self.hasReminder = task.hasReminder
         self.reminderDate = task.reminderDate?.timeIntervalSince1970.milliseconds
+        self.priority = task.priority
+        self.notes = task.notes.isEmpty ? nil : task.notes
     }
 
     func toLumaTask() -> LumaTask {
@@ -54,6 +58,8 @@ struct ExportableTask: Codable {
         task.completedAt = completedAt.map { Date(timeIntervalSince1970: $0 / 1000) }
         task.postponedCount = postponedCount
         task.originalDueDate = originalDueDate.map { Date(timeIntervalSince1970: $0 / 1000) }
+        task.priority = priority ?? 0
+        task.notes = notes ?? ""
         return task
     }
 }

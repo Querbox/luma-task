@@ -87,7 +87,7 @@ struct FocusView: View {
             }
             .sheet(item: $selectedTask) { task in
                 TaskDetailSheet(task: task)
-                    .presentationDetents([.medium, .large])
+                    .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
                     .presentationBackground(.ultraThinMaterial)
             }

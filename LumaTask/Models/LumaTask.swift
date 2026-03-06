@@ -1,5 +1,44 @@
 import Foundation
+import SwiftUI
 import SwiftData
+
+// MARK: - Priority
+
+enum TaskPriority: Int, CaseIterable {
+    case none = 0
+    case low = 1
+    case medium = 2
+    case high = 3
+
+    var label: String {
+        switch self {
+        case .none: "Keine"
+        case .low: "Niedrig"
+        case .medium: "Mittel"
+        case .high: "Hoch"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .none: .secondary
+        case .low: .lumaSuccess
+        case .medium: .lumaWarning
+        case .high: .lumaDanger
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .none: "minus"
+        case .low: "arrow.down"
+        case .medium: "equal"
+        case .high: "exclamationmark"
+        }
+    }
+}
+
+// MARK: - Model
 
 @Model
 final class LumaTask {
@@ -17,6 +56,8 @@ final class LumaTask {
     var tags: [String]
     var hasReminder: Bool
     var reminderDate: Date?
+    var priority: Int
+    var notes: String
 
     init(
         content: String,
@@ -26,7 +67,9 @@ final class LumaTask {
         icon: String? = nil,
         tags: [String] = [],
         hasReminder: Bool = false,
-        reminderDate: Date? = nil
+        reminderDate: Date? = nil,
+        priority: Int = 0,
+        notes: String = ""
     ) {
         self.id = UUID()
         self.content = content
@@ -42,5 +85,7 @@ final class LumaTask {
         self.tags = tags
         self.hasReminder = hasReminder
         self.reminderDate = reminderDate
+        self.priority = priority
+        self.notes = notes
     }
 }

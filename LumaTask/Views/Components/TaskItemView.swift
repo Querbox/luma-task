@@ -131,8 +131,14 @@ struct TaskItemView: View {
                     }
 
                     // Metadata row
-                    if task.dueDate != nil || !task.tags.isEmpty || task.hasReminder || task.recurrence != nil {
+                    if task.dueDate != nil || !task.tags.isEmpty || task.hasReminder || task.recurrence != nil || task.priority > 0 {
                         HStack(spacing: LumaSpacing.sm) {
+                            if task.priority > 0, let p = TaskPriority(rawValue: task.priority) {
+                                Label(p.label, systemImage: p.icon)
+                                    .font(.lumaCaption)
+                                    .foregroundStyle(p.color)
+                            }
+
                             if let dueDate = task.dueDate {
                                 Label(dueDate.formattedGerman, systemImage: "calendar")
                                     .font(.lumaSmall)
@@ -228,7 +234,11 @@ struct TaskItemView: View {
                         thresholdState = .none
                     }
             )
-            .onTapGesture(perform: onTap)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                guard abs(offset) < 5 else { return }
+                onTap()
+            }
             .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isDragging)
         }
         // Highlight glow for just-created tasks

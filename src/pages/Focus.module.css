@@ -20,7 +20,7 @@
     font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.4px;
     margin-bottom: var(--space-4);
 }
 
@@ -30,15 +30,29 @@
 }
 
 .notificationButton {
-    background: var(--glass-bg);
-    border: 0.5px solid var(--glass-border);
-    border-radius: var(--radius-full);
+    position: relative;
+    overflow: hidden;
     padding: var(--space-8) var(--space-12);
     color: var(--color-accent);
     font-size: var(--font-size-small);
     font-weight: var(--font-weight-semibold);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+
+    /* Liquid Glass Pill */
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    box-shadow: var(--glass-shadow);
+}
+
+.notificationButton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
 }
 
 .list {
@@ -55,7 +69,7 @@
 }
 
 .sectionTitle {
-    font-size: var(--font-size-secondary);
+    font-size: var(--font-size-small);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-secondary);
     text-transform: uppercase;
@@ -80,14 +94,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Use dynamic viewport height to avoid mobile browser UI resizing issues */
     height: 100dvh;
     color: var(--color-text-secondary);
 }
 
 .loadingDots {
     display: flex;
-    gap: 8px;
+    gap: var(--space-8);
     font-size: 24px;
     color: var(--color-accent);
 }
@@ -109,13 +122,11 @@
 }
 
 @keyframes pulse {
-
     0%,
     100% {
         opacity: 0.3;
         transform: scale(0.8);
     }
-
     50% {
         opacity: 1;
         transform: scale(1.2);

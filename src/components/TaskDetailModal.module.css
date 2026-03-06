@@ -1,10 +1,10 @@
 .backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.35);
     z-index: 200;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(20px) var(--glass-saturation);
 }
 
 .modal {
@@ -12,45 +12,64 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--color-bg-secondary);
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    padding: 0;
-    padding-bottom: calc(var(--safe-area-bottom) + 20px);
     z-index: 201;
-    max-height: 85vh;
     max-height: 85dvh;
-    /* Dynamic viewport height for mobile keyboards */
     display: flex;
     flex-direction: column;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    padding-bottom: calc(var(--safe-area-bottom) + 20px);
+    overflow: hidden;
+
+    /* Liquid Glass Material */
+    background: var(--glass-bg-elevated);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    border: 0.5px solid var(--glass-border);
+    border-bottom: none;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.3),
+        0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.modal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .handle {
     width: 36px;
     height: 5px;
     background: var(--color-text-tertiary);
-    opacity: 0.3;
-    border-radius: 3px;
+    opacity: 0.4;
+    border-radius: var(--radius-full);
     margin: 12px auto 8px;
+    position: relative;
+    z-index: 2;
 }
 
 .closeBtn {
     position: absolute;
     right: 16px;
     top: 12px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-full);
     background: var(--color-bg-tertiary);
-    border: none;
+    border: 0.5px solid var(--glass-border);
     outline: none;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--color-text-secondary);
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background var(--transition-glass);
+    z-index: 3;
 }
 
 .closeBtn:active {
@@ -65,7 +84,8 @@
     overflow-y: auto;
     flex: 1;
     min-height: 0;
-    /* Important for flex scrolling */
+    position: relative;
+    z-index: 2;
 }
 
 /* Title input */
@@ -74,13 +94,13 @@
     background: transparent;
     border: none;
     font-size: 28px;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     padding: 0;
     margin: 0;
     outline: none;
     letter-spacing: -0.5px;
-    line-height: 1.2;
+    line-height: var(--line-height-tight);
 }
 
 .titleInput::placeholder {
@@ -104,7 +124,7 @@
     padding: var(--space-16) 0;
     background: transparent;
     border: none;
-    border-bottom: none;
+    border-bottom: 0.5px solid var(--glass-border);
     cursor: pointer;
     outline: none;
     transition: opacity 0.15s;
@@ -122,7 +142,7 @@
 .infoLeft {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-12);
 }
 
 .icon {
@@ -131,24 +151,24 @@
 }
 
 .label {
-    font-size: 17px;
+    font-size: var(--font-size-body);
     color: var(--color-text-primary);
-    font-weight: 400;
+    font-weight: var(--font-weight-regular);
 }
 
 .infoRight {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-6);
 }
 
 .value {
-    font-size: 17px;
+    font-size: var(--font-size-body);
     color: var(--color-text-secondary);
 }
 
 .placeholder {
-    font-size: 17px;
+    font-size: var(--font-size-body);
     color: var(--color-text-tertiary);
 }
 
@@ -159,18 +179,18 @@
 
 /* Picker row */
 .pickerRow {
-    padding: 12px 16px;
-    background: var(--color-bg-secondary);
+    padding: var(--space-12) var(--space-16);
+    background: transparent;
     border-top: 0.5px solid var(--glass-border);
 }
 
 .picker {
     width: 100%;
     background: var(--color-bg-tertiary);
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-size: 17px;
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-12);
+    font-size: var(--font-size-body);
     color: var(--color-text-primary);
     outline: none;
 }
@@ -181,44 +201,44 @@
 
 /* Reminder Picker */
 .reminderPicker {
-    padding: 16px;
-    background: var(--color-bg-secondary);
+    padding: var(--space-16);
+    background: transparent;
     border-top: 0.5px solid var(--glass-border);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-16);
 }
 
 .pickerHeader {
     text-align: center;
-    padding-bottom: 8px;
+    padding-bottom: var(--space-8);
 }
 
 .pickerTitle {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: var(--font-size-secondary);
+    font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
 }
 
 .quickOptions {
     display: flex;
-    gap: 8px;
+    gap: var(--space-8);
     flex-wrap: wrap;
 }
 
 .quickBtn {
     flex: 1;
     min-width: calc(50% - 4px);
-    padding: 12px 16px;
+    padding: var(--space-12) var(--space-16);
     background: var(--color-bg-tertiary);
-    border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-primary);
     cursor: pointer;
     outline: none;
-    transition: all 0.2s;
+    transition: all var(--transition-glass);
 }
 
 .quickBtn:active {
@@ -229,68 +249,67 @@
 .customPicker {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-8);
 }
 
 .pickerLabel {
-    font-size: 13px;
+    font-size: var(--font-size-small);
     color: var(--color-text-secondary);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
 }
 
 .removeReminderBtn {
     width: 100%;
-    padding: 12px;
+    padding: var(--space-12);
     background: transparent;
-    border: 1px solid rgba(255, 59, 48, 0.3);
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    color: #FF3B30;
+    border: 0.5px solid rgba(255, 69, 58, 0.3);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-danger);
     cursor: pointer;
     outline: none;
-    transition: all 0.2s;
+    transition: all var(--transition-glass);
 }
 
 .removeReminderBtn:active {
-    background: rgba(255, 59, 48, 0.1);
+    background: rgba(255, 69, 58, 0.1);
 }
 
 .cancelBtn {
     width: 100%;
-    padding: 12px;
+    padding: var(--space-12);
     background: var(--color-bg-tertiary);
-    border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-glass);
 }
 
 .cancelBtn:active {
     background: var(--color-bg-primary);
 }
 
-
 /* Actions */
 .actions {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding-top: 8px;
+    gap: var(--space-12);
+    padding-top: var(--space-8);
 }
 
 .actionBtn {
     width: 100%;
-    height: 54px;
-    border-radius: 12px;
+    height: 52px;
+    border-radius: var(--radius-md);
     border: none;
-    font-size: 17px;
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-glass);
 }
 
 .completeBtn {
@@ -305,10 +324,10 @@
 
 .deleteBtn {
     background: transparent;
-    color: #FF3B30;
-    border: 1px solid rgba(255, 59, 48, 0.2);
+    color: var(--color-danger);
+    border: 0.5px solid rgba(255, 69, 58, 0.2);
 }
 
 .deleteBtn:active {
-    background: rgba(255, 59, 48, 0.1);
+    background: rgba(255, 69, 58, 0.1);
 }

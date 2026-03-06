@@ -1,6 +1,6 @@
 @import './styles/theme.css';
 
-/* iOS-Style Global Reset */
+/* iOS 26 Liquid Glass Global Reset */
 *,
 *::before,
 *::after {
@@ -29,7 +29,6 @@
 html,
 body,
 #root {
-  /* Use dynamic viewport height to avoid 100vh bugs on mobile browsers */
   min-height: 100dvh;
   width: 100%;
 }
@@ -38,15 +37,14 @@ body {
   overflow-x: hidden;
   background-color: var(--color-bg-primary);
   user-select: none;
-  /* iOS-like feel */
 }
 
-/* Typography Utilities */
+/* Typography */
 h1 {
   font-size: var(--font-size-title);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.4px;
 }
 
 h2 {
@@ -70,19 +68,46 @@ p {
   font-size: var(--font-size-small);
 }
 
-/* Layout Utilities */
+/* Liquid Glass Material */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+  border: 0.5px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  position: relative;
 }
 
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-shine);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Card Material */
 .card {
-  background: var(--color-bg-secondary);
+  background: var(--glass-bg-elevated);
+  backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
   border-radius: var(--radius-xl);
+  border: 0.5px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   padding: var(--space-16);
   transition: transform var(--transition-fluid);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-shine);
+  pointer-events: none;
 }
 
 .card:active {
@@ -112,7 +137,11 @@ input {
   color: var(--color-text-primary);
 }
 
-/* Scrollbar Hide (iOS Style) */
+/* Scrollbar Hide */
 ::-webkit-scrollbar {
   display: none;
+}
+
+* {
+  scrollbar-width: none;
 }

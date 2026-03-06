@@ -4,7 +4,7 @@
     justify-content: center;
     border-radius: var(--radius-full);
     font-weight: var(--font-weight-semibold);
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: all var(--transition-glass);
     cursor: pointer;
     user-select: none;
     border: none;
@@ -18,15 +18,26 @@
 }
 
 .primary:active {
-    background-color: var(--color-accent);
-    /* Handled by framer-motion opacity/scale mostly, but good fallback */
     opacity: 0.9;
 }
 
 .secondary {
-    background-color: var(--color-bg-tertiary);
-    /* Slightly lighter/darker than bg */
+    position: relative;
+    overflow: hidden;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(20px) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
     color: var(--color-text-primary);
+}
+
+.secondary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
 }
 
 .ghost {
@@ -44,16 +55,16 @@
 
 /* Sizes */
 .sm {
-    padding: 8px 16px;
+    padding: var(--space-8) var(--space-16);
     font-size: var(--font-size-small);
 }
 
 .md {
-    padding: 12px 24px;
+    padding: var(--space-12) var(--space-24);
     font-size: var(--font-size-body);
 }
 
 .lg {
-    padding: 16px 32px;
+    padding: var(--space-16) var(--space-32);
     font-size: var(--font-size-body);
 }

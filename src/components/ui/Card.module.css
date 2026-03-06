@@ -1,8 +1,23 @@
 .card {
-    padding: var(--spacing-md);
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-16);
     border-radius: var(--radius-lg);
-    background-color: var(--color-bg-secondary);
-    /* Fallback */
-    box-shadow: var(--shadow-sm);
     color: var(--color-text-primary);
+
+    /* Liquid Glass */
+    background: var(--glass-bg-elevated);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
 }

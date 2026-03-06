@@ -17,7 +17,7 @@
     font-size: var(--font-size-title);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.4px;
 }
 
 .statsGrid {
@@ -28,11 +28,29 @@
 }
 
 .statCard {
+    position: relative;
+    overflow: hidden;
     padding: var(--space-16);
     border-radius: var(--radius-xl);
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
+
+    /* Liquid Glass */
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.statCard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
 }
 
 .statHeader {
@@ -52,10 +70,27 @@
 }
 
 .card {
-    background: var(--color-bg-secondary);
+    position: relative;
+    overflow: hidden;
     padding: var(--space-16);
     border-radius: var(--radius-xl);
     margin-bottom: var(--space-24);
+
+    /* Liquid Glass */
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
 }
 
 .cardHeader {
@@ -67,7 +102,7 @@
 }
 
 .cardTitle {
-    font-size: var(--font-size-secondary);
+    font-size: var(--font-size-small);
     font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -97,25 +132,25 @@
 .cell {
     width: 10px;
     height: 10px;
-    border-radius: 2px;
+    border-radius: 3px;
     background-color: var(--color-bg-tertiary);
     transition: all 0.2s ease;
 }
 
 .cell[data-intensity="1"] {
-    background-color: rgba(50, 215, 75, 0.4);
+    background-color: rgba(48, 209, 88, 0.35);
 }
 
 .cell[data-intensity="2"] {
-    background-color: rgba(50, 215, 75, 0.6);
+    background-color: rgba(48, 209, 88, 0.55);
 }
 
 .cell[data-intensity="3"] {
-    background-color: rgba(50, 215, 75, 0.8);
+    background-color: rgba(48, 209, 88, 0.75);
 }
 
 .cell[data-intensity="4"] {
-    background-color: rgba(50, 215, 75, 1);
+    background-color: rgba(48, 209, 88, 1);
 }
 
 .section {
@@ -143,20 +178,35 @@
 }
 
 .activityItem:not(:last-child) {
-    border-bottom: none;
-    margin-bottom: var(--space-8);
+    border-bottom: 0.5px solid var(--glass-border);
 }
 
 .activityIcon {
     font-size: 24px;
     width: 44px;
     height: 44px;
-    background: linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-secondary) 100%);
-    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    /* Liquid Glass */
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(20px) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.activityIcon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
 }
 
 .activityInfo {

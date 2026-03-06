@@ -10,10 +10,14 @@
     padding-top: var(--space-8);
     padding-bottom: var(--safe-area-bottom);
     z-index: 100;
+
+    /* Liquid Glass Material */
     background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border-top: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border-top: 0.5px solid var(--glass-border);
+    box-shadow: 0 -1px 0 var(--glass-border),
+        0 -8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .tabItem {
@@ -24,11 +28,13 @@
     text-decoration: none;
     color: var(--color-text-secondary);
     min-width: 64px;
-    transition: transform var(--transition-fluid);
+    padding: var(--space-4) 0;
+    transition: color var(--transition-glass),
+        transform var(--transition-spring);
 }
 
 .tabItem:active {
-    transform: scale(0.9);
+    transform: scale(0.85);
 }
 
 .active {

@@ -3,23 +3,38 @@
     bottom: calc(var(--tab-bar-height) + var(--safe-area-bottom) + var(--space-16) + 120px);
     left: var(--space-16);
     right: var(--space-16);
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
     padding: var(--space-16);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-12);
     z-index: 40;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+
+    /* Liquid Glass */
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) var(--glass-saturation);
+    border: 0.5px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--glass-shadow-elevated);
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-shine);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .content {
     flex: 1;
     min-width: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .message {
@@ -27,19 +42,21 @@
     color: var(--color-text-primary);
     margin: 0;
     line-height: var(--line-height-base);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
 }
 
 .actions {
     display: flex;
     align-items: center;
-    gap: var(--space-12);
+    gap: var(--space-8);
     flex-shrink: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .accept {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: var(--radius-full);
     background: var(--color-accent);
     color: white;
@@ -49,16 +66,16 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-spring);
 }
 
 .accept:active {
-    transform: scale(0.92);
+    transform: scale(0.88);
 }
 
 .dismiss {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: var(--radius-full);
     background: transparent;
     color: var(--color-text-tertiary);
@@ -72,5 +89,5 @@
 }
 
 .dismiss:active {
-    opacity: 0.6;
+    opacity: 0.5;
 }

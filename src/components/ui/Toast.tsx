@@ -1,14 +1,16 @@
 import React from 'react';
 import { useNotification, type Toast as ToastType } from '../../context/NotificationContext';
 import styles from './Toast.module.css';
+import { useHaptics } from '../../hooks/useHaptics';
 
 const Toast: React.FC<{ toast: ToastType }> = ({ toast }) => {
     const { removeToast } = useNotification();
+    const haptics = useHaptics();
 
     return (
         <div
             className={`${styles.toast} ${styles[toast.type]}`}
-            onClick={() => removeToast(toast.id)}
+            onClick={() => { haptics.light(); removeToast(toast.id); }}
         >
             <div className={styles.content}>
                 {toast.message}

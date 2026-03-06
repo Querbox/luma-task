@@ -3,7 +3,8 @@
  */
 
 import { parseTask } from './parsers';
-import type { ParsedTask } from './parsers';
+import type { ParsedTask as _ParsedTask } from './parsers';
+export type { _ParsedTask as ParsedTask };
 
 // Re-export for backward compatibility
 export { parseTask as parseTaskInput };

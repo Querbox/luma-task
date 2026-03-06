@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 import styles from './Suggestion.module.css';
+import { useHaptics } from '../hooks/useHaptics';
 
 interface SuggestionProps {
     message: string;
@@ -17,6 +18,7 @@ export const Suggestion: React.FC<SuggestionProps> = ({
     autoHideDuration = 12000
 }) => {
     const [isVisible, setIsVisible] = useState(true);
+    const haptics = useHaptics();
 
     React.useEffect(() => {
         if (!autoHideDuration) return;
@@ -28,11 +30,13 @@ export const Suggestion: React.FC<SuggestionProps> = ({
     }, [autoHideDuration, onDismiss]);
 
     const handleAccept = () => {
+        haptics.success();
         setIsVisible(false);
         onAccept();
     };
 
     const handleDismiss = () => {
+        haptics.light();
         setIsVisible(false);
         onDismiss();
     };

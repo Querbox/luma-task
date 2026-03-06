@@ -17,6 +17,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useTasks } from '../hooks/useTasks';
+import { useHaptics } from '../hooks/useHaptics';
 import { TaskItem } from '../components/TaskItem';
 import styles from './Calendar.module.css';
 
@@ -24,6 +25,7 @@ export const Calendar: React.FC = () => {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const { tasks, toggleTask, deleteTask, setSelectedTaskId } = useTasks();
+    const haptics = useHaptics();
 
     const days = useMemo(() => {
         const start = startOfWeek(startOfMonth(currentMonth), { locale: de });
@@ -42,8 +44,8 @@ export const Calendar: React.FC = () => {
         return tasks.filter(task => task.dueDate && isSameDay(new Date(task.dueDate), date)).length;
     };
 
-    const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
-    const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
+    const nextMonth = () => { haptics.light(); setCurrentMonth(addMonths(currentMonth, 1)); };
+    const prevMonth = () => { haptics.light(); setCurrentMonth(subMonths(currentMonth, 1)); };
 
     return (
         <div className={styles.container}>
@@ -70,7 +72,7 @@ export const Calendar: React.FC = () => {
                         return (
                             <button
                                 key={day.toISOString()}
-                                onClick={() => setSelectedDate(day)}
+                                onClick={() => { haptics.light(); setSelectedDate(day); }}
                                 className={clsx(
                                     styles.day,
                                     !isCurrentMonth && styles.outsideMonth,

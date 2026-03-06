@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "file=\"$CLAUDE_FILE_PATH\"; if echo \"$file\" | grep -qE '\\.(ts|tsx)$'; then npx eslint --fix \"$file\" 2>/dev/null || true; fi"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "echo \"$CLAUDE_FILE_PATH\" | grep -qvE '(package-lock\\.json|pnpm-lock\\.yaml|yarn\\.lock)$'"
+      }
+    ]
+  }
+}

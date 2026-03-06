@@ -1,11 +1,12 @@
-import React from 'react';
-import { motion, type PanInfo, useAnimation, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, type PanInfo, useAnimation, AnimatePresence, useMotionValue, useTransform, useMotionValueEvent } from 'framer-motion';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { Check, Trash2, Calendar, Bell } from 'lucide-react';
 import clsx from 'clsx';
 import type { Task } from '../types';
 import styles from './TaskItem.module.css';
+import { useHaptics } from '../hooks/useHaptics';
 
 interface TaskItemProps {
     task: Task;
@@ -22,16 +23,33 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 }) => {
     const controls = useAnimation();
     const x = useMotionValue(0);
+    const haptics = useHaptics();
+    const thresholdRef = useRef<'none' | 'complete' | 'delete'>('none');
 
     // Derived values for backgrounds
     const completeOpacity = useTransform(x, [0, 60], [0, 1]);
     const deleteOpacity = useTransform(x, [0, -60], [0, 1]);
 
+    // Haptic feedback at drag threshold crossing
+    useMotionValueEvent(x, 'change', (latest) => {
+        if (latest > 80 && thresholdRef.current !== 'complete') {
+            thresholdRef.current = 'complete';
+            haptics.threshold();
+        } else if (latest < -80 && thresholdRef.current !== 'delete') {
+            thresholdRef.current = 'delete';
+            haptics.threshold();
+        } else if (latest > -80 && latest < 80) {
+            thresholdRef.current = 'none';
+        }
+    });
+
     const handleDragEnd = async (_event: any, info: PanInfo) => {
         if (info.offset.x > 80) {
+            haptics.success();
             onToggle(task.id);
             await controls.start({ x: 0 });
         } else if (info.offset.x < -80) {
+            haptics.error();
             if (window.confirm('Aufgabe wirklich löschen?')) {
                 onDelete(task.id);
             }
@@ -81,6 +99,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                     className={clsx(styles.checkbox, task.isCompleted && styles.checked)}
                     onClick={(e) => {
                         e.stopPropagation();
+                        if (!task.isCompleted) {
+                            haptics.success();
+                        } else {
+                            haptics.light();
+                        }
                         onToggle(task.id);
                     }}
                 >

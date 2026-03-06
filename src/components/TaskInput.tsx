@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Plus, Calendar as CalendarIcon, RotateCw } from 'lucide-react';
-import { parseTaskInput } from '../services/nlp'; // We need to fix the import path potentially? No, same src structure.
+import { parseTaskInput } from '../services/nlp';
 import type { NewTask } from '../types';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import styles from './TaskInput.module.css';
+import { useHaptics } from '../hooks/useHaptics';
 
 interface TaskInputProps {
     onAddTask: (task: NewTask) => void;
@@ -18,6 +19,7 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const wrapperRef = useRef<HTMLFormElement | null>(null);
+    const haptics = useHaptics();
 
     useEffect(() => {
         if (input.trim()) {
@@ -32,11 +34,12 @@ export const TaskInput: React.FC<TaskInputProps> = ({ onAddTask }) => {
         e.preventDefault();
         if (!input.trim() || !parsedPreview) return;
 
+        haptics.medium();
         onAddTask({
             content: input,
             title: parsedPreview.title,
             dueDate: parsedPreview.date ? parsedPreview.date.getTime() : undefined,
-            recurrence: parsedPreview.recurrence,
+            recurrence: parsedPreview.recurrence as NewTask['recurrence'],
             icon: parsedPreview.icon,
             tags: parsedPreview.tags
         });

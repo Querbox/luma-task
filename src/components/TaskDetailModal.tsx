@@ -6,9 +6,11 @@ import { de } from 'date-fns/locale';
 import { X, Calendar as CalendarIcon, RotateCw, Bell, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 import styles from './TaskDetailModal.module.css';
+import { useHaptics } from '../hooks/useHaptics';
 
 export const TaskDetailModal: React.FC = () => {
     const { tasks, selectedTaskId, setSelectedTaskId, updateTask, deleteTask, toggleTask } = useTasks();
+    const haptics = useHaptics();
     const [title, setTitle] = useState('');
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showReminderPicker, setShowReminderPicker] = useState(false);
@@ -79,12 +81,18 @@ export const TaskDetailModal: React.FC = () => {
 
     const handleDelete = async () => {
         if (confirm('Aufgabe wirklich löschen?')) {
+            haptics.error();
             await deleteTask(task.id);
             handleClose();
         }
     };
 
     const handleToggle = async () => {
+        if (!task.isCompleted) {
+            haptics.success();
+        } else {
+            haptics.light();
+        }
         await toggleTask(task.id);
         handleClose();
     };
@@ -206,19 +214,20 @@ export const TaskDetailModal: React.FC = () => {
                                         <div className={styles.quickOptions}>
                                             <button
                                                 className={styles.quickBtn}
-                                                onClick={() => handleQuickReminder(60)}
+                                                onClick={() => { haptics.light(); handleQuickReminder(60); }}
                                             >
                                                 In 1 Stunde
                                             </button>
                                             <button
                                                 className={styles.quickBtn}
-                                                onClick={() => handleQuickReminder(180)}
+                                                onClick={() => { haptics.light(); handleQuickReminder(180); }}
                                             >
                                                 In 3 Stunden
                                             </button>
                                             <button
                                                 className={styles.quickBtn}
                                                 onClick={() => {
+                                                    haptics.light();
                                                     const tomorrow = new Date();
                                                     tomorrow.setDate(tomorrow.getDate() + 1);
                                                     tomorrow.setHours(8, 0, 0, 0);

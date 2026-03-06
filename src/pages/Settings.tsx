@@ -3,9 +3,11 @@ import { useTasks } from '../hooks/useTasks';
 import { Shield, Download, Upload, Cloud, ChevronRight, Check, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 import styles from './Settings.module.css';
+import { useHaptics } from '../hooks/useHaptics';
 
 export const Settings: React.FC = () => {
     const { exportTasks, importTasks } = useTasks();
+    const haptics = useHaptics();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isPersistent, setIsPersistent] = useState<boolean | null>(null);
     const [importing, setImporting] = useState(false);
@@ -29,6 +31,7 @@ export const Settings: React.FC = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
+        haptics.success();
         setExported(true);
         setTimeout(() => setExported(false), 2000);
     };
@@ -47,8 +50,10 @@ export const Settings: React.FC = () => {
             const content = e.target?.result as string;
             try {
                 await importTasks(content);
+                haptics.success();
                 if (fileInputRef.current) fileInputRef.current.value = '';
             } catch (err) {
+                haptics.error();
                 console.error('Import failed', err);
             } finally {
                 setImporting(false);
@@ -58,6 +63,7 @@ export const Settings: React.FC = () => {
     };
 
     const handleReload = () => {
+        haptics.heavy();
         window.location.reload();
     };
 

@@ -4,6 +4,7 @@ import SwiftData
 struct HeatmapView: View {
     @Query private var allTasks: [LumaTask]
     @State private var viewModel = HeatmapViewModel()
+    @State private var appeared = false
 
     var body: some View {
         NavigationStack {
@@ -17,6 +18,8 @@ struct HeatmapView: View {
                             icon: "checkmark.circle.fill",
                             color: .lumaHeatmapRed
                         )
+                        .offset(y: appeared ? 0 : 20)
+                        .opacity(appeared ? 1 : 0)
 
                         StatCard(
                             title: "Serie",
@@ -24,6 +27,8 @@ struct HeatmapView: View {
                             icon: "flame.fill",
                             color: .lumaWarning
                         )
+                        .offset(y: appeared ? 0 : 20)
+                        .opacity(appeared ? 1 : 0)
                     }
                     .padding(.horizontal, LumaSpacing.lg)
 
@@ -35,6 +40,8 @@ struct HeatmapView: View {
 
                         contributionGraph
                     }
+                    .offset(y: appeared ? 0 : 30)
+                    .opacity(appeared ? 1 : 0)
 
                     // Top activities
                     let activities = viewModel.topActivities(from: allTasks)
@@ -44,14 +51,15 @@ struct HeatmapView: View {
                                 .font(.lumaSection)
                                 .padding(.horizontal, LumaSpacing.lg)
 
-                            ForEach(activities, id: \.emoji) { activity in
+                            ForEach(Array(activities.enumerated()), id: \.element.emoji) { index, activity in
                                 HStack(spacing: LumaSpacing.md) {
                                     Text(activity.emoji)
                                         .font(.system(size: 24))
 
-                                    Text("\(activity.count)×")
+                                    Text("×\(activity.count)")
                                         .font(.lumaBody)
                                         .foregroundStyle(.secondary)
+                                        .contentTransition(.numericText())
 
                                     Spacer()
                                 }
@@ -59,6 +67,12 @@ struct HeatmapView: View {
                                 .padding(.vertical, LumaSpacing.sm)
                                 .glassBackground(cornerRadius: LumaRadius.sm)
                                 .padding(.horizontal, LumaSpacing.lg)
+                                .offset(y: appeared ? 0 : 20)
+                                .opacity(appeared ? 1 : 0)
+                                .animation(
+                                    .spring(response: 0.5, dampingFraction: 0.8).delay(Double(index) * 0.05 + 0.3),
+                                    value: appeared
+                                )
                             }
                         }
                     }
@@ -66,6 +80,11 @@ struct HeatmapView: View {
                 .padding(.top, LumaSpacing.sm)
             }
             .navigationTitle("Aktivität")
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                appeared = true
+            }
         }
     }
 
@@ -123,12 +142,14 @@ private struct StatCard: View {
                 Image(systemName: icon)
                     .foregroundStyle(color)
                     .font(.system(size: 20))
+                    .symbolEffect(.pulse.wholeSymbol, options: .repeating.speed(0.3), isActive: true)
                 Spacer()
             }
 
             Text(value)
                 .font(.system(size: 34, weight: .bold, design: .rounded))
                 .foregroundStyle(.primary)
+                .contentTransition(.numericText())
 
             Text(title)
                 .font(.lumaSmall)

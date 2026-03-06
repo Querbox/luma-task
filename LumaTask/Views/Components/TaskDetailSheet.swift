@@ -4,7 +4,6 @@ struct TaskDetailSheet: View {
     @Bindable var task: LumaTask
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Environment(ToastManager.self) private var toastManager
 
     @State private var editedTitle: String = ""
     @State private var showDatePicker = false
@@ -20,7 +19,7 @@ struct TaskDetailSheet: View {
                         .font(.lumaTitle)
                         .onSubmit {
                             task.title = editedTitle
-                            toastManager.show("Aufgabe aktualisiert", type: .info)
+                            HapticService.shared.light()
                         }
 
                     // Info rows
@@ -31,7 +30,11 @@ struct TaskDetailSheet: View {
                             title: "Datum",
                             value: task.dueDate?.formattedGerman ?? "Kein Datum"
                         ) {
-                            showDatePicker.toggle()
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                showDatePicker.toggle()
+                                showReminderPicker = false
+                            }
+                            HapticService.shared.light()
                         }
 
                         if showDatePicker {
@@ -43,10 +46,11 @@ struct TaskDetailSheet: View {
                             .datePickerStyle(.graphical)
                             .environment(\.locale, Locale(identifier: "de_DE"))
                             .padding()
+                            .transition(.opacity.combined(with: .offset(y: -10)))
                             .onChange(of: selectedDate) { _, newDate in
                                 task.dueDate = newDate
                                 NotificationService.shared.scheduleDueNotification(for: task)
-                                toastManager.show("Datum geändert", type: .info)
+                                HapticService.shared.light()
                             }
                         }
 
@@ -69,11 +73,16 @@ struct TaskDetailSheet: View {
                             title: "Erinnerung",
                             value: task.reminderDate?.formattedGerman ?? "Keine"
                         ) {
-                            showReminderPicker.toggle()
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                showReminderPicker.toggle()
+                                showDatePicker = false
+                            }
+                            HapticService.shared.light()
                         }
 
                         if showReminderPicker {
                             reminderOptions
+                                .transition(.opacity.combined(with: .offset(y: -10)))
                         }
                     }
                     .glassBackground(cornerRadius: LumaRadius.md)
@@ -84,10 +93,6 @@ struct TaskDetailSheet: View {
                             task.isCompleted.toggle()
                             task.completedAt = task.isCompleted ? Date() : nil
                             HapticService.shared.success()
-                            toastManager.show(
-                                task.isCompleted ? "Aufgabe abgeschlossen" : "Als unerledigt markiert",
-                                type: .success
-                            )
                             dismiss()
                         } label: {
                             Label(
@@ -105,7 +110,6 @@ struct TaskDetailSheet: View {
                             NotificationService.shared.cancelNotifications(for: task.id)
                             modelContext.delete(task)
                             HapticService.shared.error()
-                            toastManager.show("Aufgabe gelöscht", type: .warning)
                             dismiss()
                         } label: {
                             Label("Löschen", systemImage: "trash")
@@ -153,8 +157,10 @@ struct TaskDetailSheet: View {
                     task.hasReminder = false
                     task.reminderDate = nil
                     NotificationService.shared.cancelNotifications(for: task.id)
-                    showReminderPicker = false
-                    toastManager.show("Erinnerung entfernt", type: .info)
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        showReminderPicker = false
+                    }
+                    HapticService.shared.light()
                 }
                 .foregroundStyle(.lumaDanger)
                 .font(.lumaSecondary)
@@ -169,9 +175,10 @@ struct TaskDetailSheet: View {
             task.reminderDate = date
             task.hasReminder = true
             NotificationService.shared.scheduleReminder(for: task)
-            showReminderPicker = false
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                showReminderPicker = false
+            }
             HapticService.shared.medium()
-            toastManager.show("Erinnerung gesetzt", type: .success)
         } label: {
             Text(label)
                 .font(.lumaSecondary)
@@ -201,7 +208,6 @@ struct TaskDetailSheet: View {
             task.recurrence = nil
         }
         HapticService.shared.light()
-        toastManager.show("Aufgabe aktualisiert", type: .info)
     }
 }
 
@@ -230,6 +236,7 @@ private struct DetailRow: View {
                 Text(value)
                     .font(.lumaSecondary)
                     .foregroundStyle(.secondary)
+                    .contentTransition(.numericText())
 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12))

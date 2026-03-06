@@ -3,12 +3,12 @@ import SwiftData
 
 struct FocusView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(ToastManager.self) private var toastManager
     @Query(sort: \LumaTask.createdAt, order: .reverse) private var allTasks: [LumaTask]
 
     @State private var viewModel = TaskListViewModel()
     @State private var selectedTask: LumaTask?
     @State private var suggestion: TaskSuggestion?
+    @State private var justCreatedId: UUID?
 
     var body: some View {
         NavigationStack {
@@ -19,7 +19,11 @@ struct FocusView: View {
                         SuggestionBanner(
                             suggestion: suggestion,
                             onAccept: { acceptSuggestion(suggestion) },
-                            onDismiss: { self.suggestion = nil }
+                            onDismiss: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                    self.suggestion = nil
+                                }
+                            }
                         )
                         .padding(.horizontal, LumaSpacing.lg)
                     }
@@ -28,7 +32,6 @@ struct FocusView: View {
                     let soon = viewModel.soonTasks(from: allTasks)
                     let later = viewModel.laterTasks(from: allTasks)
 
-                    // Heute section
                     if today.isEmpty && soon.isEmpty && later.isEmpty {
                         EmptyStateView(
                             icon: "checkmark.circle",
@@ -39,20 +42,18 @@ struct FocusView: View {
                         taskSection(tasks: today)
                     }
 
-                    // Demnächst section
                     if !soon.isEmpty {
                         sectionHeader("Demnächst")
                         taskSection(tasks: soon)
                     }
 
-                    // Später section
                     if !later.isEmpty {
                         sectionHeader("Später")
                         taskSection(tasks: later)
                     }
                 }
                 .padding(.top, LumaSpacing.sm)
-                .padding(.bottom, 100) // Space for input bar
+                .padding(.bottom, 100)
             }
             .navigationTitle("Heute")
             .toolbar {
@@ -65,7 +66,16 @@ struct FocusView: View {
             .safeAreaInset(edge: .bottom) {
                 TaskInputBar { input in
                     let task = viewModel.createTask(from: input, context: modelContext)
-                    toastManager.show("Aufgabe hinzugefügt", type: .success)
+
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                        justCreatedId = task.id
+                    }
+                    Task { @MainActor in
+                        try? await Task.sleep(for: .milliseconds(800))
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            justCreatedId = nil
+                        }
+                    }
 
                     if task.hasReminder {
                         NotificationService.shared.scheduleReminder(for: task)
@@ -91,12 +101,17 @@ struct FocusView: View {
 
     @ViewBuilder
     private func sectionHeader(_ title: String) -> some View {
-        Text(title)
-            .font(.lumaSection)
-            .foregroundStyle(.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, LumaSpacing.lg)
-            .padding(.top, LumaSpacing.lg)
+        HStack(spacing: LumaSpacing.md) {
+            Text(title)
+                .font(.lumaSection)
+                .foregroundStyle(.secondary)
+
+            Rectangle()
+                .fill(.secondary.opacity(0.15))
+                .frame(height: 0.5)
+        }
+        .padding(.horizontal, LumaSpacing.lg)
+        .padding(.top, LumaSpacing.xl)
     }
 
     @ViewBuilder
@@ -104,16 +119,16 @@ struct FocusView: View {
         ForEach(tasks) { task in
             TaskItemView(
                 task: task,
+                isHighlighted: task.id == justCreatedId,
                 onToggle: {
-                    viewModel.toggleTask(task)
-                    toastManager.show(
-                        task.isCompleted ? "Aufgabe abgeschlossen" : "Aufgabe wiederhergestellt",
-                        type: .success
-                    )
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                        viewModel.toggleTask(task)
+                    }
                 },
                 onDelete: {
-                    viewModel.deleteTask(task, context: modelContext)
-                    toastManager.show("Aufgabe gelöscht", type: .warning)
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        viewModel.deleteTask(task, context: modelContext)
+                    }
                 },
                 onTap: {
                     selectedTask = task
@@ -122,11 +137,11 @@ struct FocusView: View {
             )
             .padding(.horizontal, LumaSpacing.lg)
             .transition(.asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
+                insertion: .push(from: .bottom).combined(with: .opacity),
+                removal: .push(from: .trailing).combined(with: .opacity)
             ))
         }
-        .animation(.spring(response: 0.35, dampingFraction: 0.8), value: allTasks.count)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: tasks.map(\.id))
     }
 
     private func acceptSuggestion(_ suggestion: TaskSuggestion) {
@@ -139,8 +154,10 @@ struct FocusView: View {
             case .setTime, .adjustDate:
                 break
             }
-            toastManager.show("Vorschlag angewendet", type: .success)
+            HapticService.shared.success()
         }
-        self.suggestion = nil
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            self.suggestion = nil
+        }
     }
 }

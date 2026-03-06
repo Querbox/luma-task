@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TaskInputBar: View {
     @State private var inputText = ""
+    @State private var sendScale: CGFloat = 1.0
     @FocusState private var isFocused: Bool
 
     let parser = TaskParser()
@@ -25,10 +26,12 @@ struct TaskInputBar: View {
                     HStack(spacing: LumaSpacing.sm) {
                         if let icon = preview.icon {
                             ChipView(text: icon)
+                                .transition(.scale.combined(with: .opacity))
                         }
 
                         ForEach(preview.tags, id: \.self) { tag in
                             ChipView(text: "#\(tag)", color: .lumaAccent)
+                                .transition(.scale.combined(with: .opacity))
                         }
 
                         if let date = preview.date {
@@ -37,6 +40,7 @@ struct TaskInputBar: View {
                                 text: date.formattedGerman,
                                 color: .lumaAccent
                             )
+                            .transition(.scale.combined(with: .opacity))
                         }
 
                         if let time = preview.time {
@@ -45,6 +49,7 @@ struct TaskInputBar: View {
                                 text: time,
                                 color: .lumaAccent
                             )
+                            .transition(.scale.combined(with: .opacity))
                         }
 
                         if let recurrence = preview.recurrence {
@@ -53,6 +58,7 @@ struct TaskInputBar: View {
                                 text: recurrence.displayLabel,
                                 color: .lumaWarning
                             )
+                            .transition(.scale.combined(with: .opacity))
                         }
                     }
                     .padding(.horizontal, LumaSpacing.lg)
@@ -73,10 +79,12 @@ struct TaskInputBar: View {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(.lumaAccent)
                         .contentTransition(.symbolEffect(.replace))
+                        .scaleEffect(sendScale)
                         .frame(width: 36, height: 36)
                 }
                 .disabled(inputText.trimmingCharacters(in: .whitespaces).isEmpty)
                 .opacity(inputText.isEmpty ? 0.5 : 1)
+                .animation(.easeInOut(duration: 0.2), value: inputText.isEmpty)
             }
             .padding(.horizontal, LumaSpacing.lg)
             .padding(.vertical, LumaSpacing.md)
@@ -84,14 +92,28 @@ struct TaskInputBar: View {
         }
         .padding(.horizontal, LumaSpacing.lg)
         .padding(.bottom, LumaSpacing.sm)
-        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: hasPreviewContent)
+        .animation(.spring(response: 0.35, dampingFraction: 0.75), value: hasPreviewContent)
     }
 
     private func submit() {
         let trimmed = inputText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
+
+        // Send button bounce
+        withAnimation(.spring(response: 0.2, dampingFraction: 0.4)) {
+            sendScale = 0.7
+        }
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(100))
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                sendScale = 1.0
+            }
+        }
+
         onSubmit(trimmed)
-        inputText = ""
+        withAnimation(.easeOut(duration: 0.15)) {
+            inputText = ""
+        }
         HapticService.shared.medium()
     }
 }

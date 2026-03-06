@@ -29,7 +29,6 @@
 		636378F767C1B11CB2B55A36 /* TaskEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B197998C80369B25DBA225B /* TaskEvent.swift */; };
 		704B3B3F95AE5B0D9BBB45FC /* TitleCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D065F4B647F39B39667BF0 /* TitleCleaner.swift */; };
 		7D2791E62635ED6BE7531905 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9220680690573689F7EC138 /* TaskListViewModel.swift */; };
-		7EBCECC8C48380A3B0AB0FAD /* ToastOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DFEBC4204F37638CBC806B /* ToastOverlay.swift */; };
 		7EF663D0F761E3548882E425 /* TextNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B0AB8A5449FE1F1A7A46A8 /* TextNormalizer.swift */; };
 		81201DC148B0603698B468CD /* TagExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8181F9E63EF623B679730F /* TagExtractor.swift */; };
 		85E5C84C22DDA993A73A7BD4 /* TaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83ABFCAD51D02E531FF6AB1 /* TaskItemView.swift */; };
@@ -51,7 +50,6 @@
 
 /* Begin PBXFileReference section */
 		00007FCCD479FA740AD5B36C /* String+Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Regex.swift"; sourceTree = "<group>"; };
-		03DFEBC4204F37638CBC806B /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		0C6F8BAFB896851BAAB792A1 /* DateParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateParser.swift; sourceTree = "<group>"; };
 		1188A5DC3682828FEE7B0F13 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1DED1C29990B34F43C85001D /* TaskPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPattern.swift; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 			children = (
 				C6F84348A879606A48C99F41 /* EmptyStateView.swift */,
 				59665D164217416521EF24EF /* GlassCard.swift */,
-				03DFEBC4204F37638CBC806B /* ToastOverlay.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -355,7 +352,6 @@
 				7EF663D0F761E3548882E425 /* TextNormalizer.swift in Sources */,
 				0B26EBD174F893722E17B570 /* TimeParser.swift in Sources */,
 				704B3B3F95AE5B0D9BBB45FC /* TitleCleaner.swift in Sources */,
-				7EBCECC8C48380A3B0AB0FAD /* ToastOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,6 +5,7 @@ struct CalendarTabView: View {
     @Query(sort: \LumaTask.dueDate) private var allTasks: [LumaTask]
     @State private var viewModel = CalendarViewModel()
     @State private var selectedTask: LumaTask?
+    @State private var monthTransitionDirection: Edge = .trailing
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 2), count: 7)
 
@@ -14,21 +15,33 @@ struct CalendarTabView: View {
                 VStack(spacing: LumaSpacing.lg) {
                     // Month navigation
                     HStack {
-                        Button(action: viewModel.previousMonth) {
+                        Button {
+                            monthTransitionDirection = .leading
+                            viewModel.previousMonth()
+                        } label: {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 18, weight: .semibold))
+                                .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
                         }
 
                         Spacer()
 
                         Text(viewModel.monthTitle)
                             .font(.lumaSection)
+                            .contentTransition(.numericText())
+                            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.monthTitle)
 
                         Spacer()
 
-                        Button(action: viewModel.nextMonth) {
+                        Button {
+                            monthTransitionDirection = .trailing
+                            viewModel.nextMonth()
+                        } label: {
                             Image(systemName: "chevron.right")
                                 .font(.system(size: 18, weight: .semibold))
+                                .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
                         }
                     }
                     .padding(.horizontal, LumaSpacing.xl)
@@ -56,7 +69,9 @@ struct CalendarTabView: View {
                                     taskCount: viewModel.taskCount(for: date, from: allTasks)
                                 )
                                 .onTapGesture {
-                                    viewModel.selectDate(date)
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                        viewModel.selectDate(date)
+                                    }
                                 }
                             } else {
                                 Color.clear
@@ -71,6 +86,7 @@ struct CalendarTabView: View {
                         Text(viewModel.selectedDateLabel)
                             .font(.lumaSection)
                             .padding(.horizontal, LumaSpacing.lg)
+                            .contentTransition(.numericText())
 
                         let dayTasks = viewModel.tasksForDay(viewModel.selectedDate, from: allTasks)
 
@@ -84,19 +100,26 @@ struct CalendarTabView: View {
                                 TaskItemView(
                                     task: task,
                                     onToggle: {
-                                        task.isCompleted.toggle()
-                                        task.completedAt = task.isCompleted ? Date() : nil
+                                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                                            task.isCompleted.toggle()
+                                            task.completedAt = task.isCompleted ? Date() : nil
+                                        }
                                         HapticService.shared.success()
                                     },
                                     onDelete: {
-                                        // Handled in parent
+                                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                            // noop in calendar
+                                        }
                                     },
                                     onTap: {
                                         selectedTask = task
+                                        HapticService.shared.light()
                                     }
                                 )
                                 .padding(.horizontal, LumaSpacing.lg)
+                                .transition(.push(from: .bottom).combined(with: .opacity))
                             }
+                            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.selectedDate)
                         }
                     }
                     .padding(.top, LumaSpacing.lg)
@@ -147,7 +170,13 @@ private struct CalendarDayCell: View {
                 Circle()
                     .fill(.lumaAccent)
                     .frame(width: 36, height: 36)
+                    .transition(.scale.combined(with: .opacity))
+            } else if isToday {
+                Circle()
+                    .stroke(.lumaAccent.opacity(0.3), lineWidth: 1.5)
+                    .frame(width: 36, height: 36)
             }
         }
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
     }
 }

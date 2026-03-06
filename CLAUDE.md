@@ -1,39 +1,50 @@
-# Luma Task
+# Luma Task (iOS)
 
-A PWA task management app built with React 19, TypeScript, and Vite.
+Native Swift iOS App — Task-Management mit iOS 26 Liquid Glass Design.
 
-## Commands
+## Plattform
 
-- `npm run dev` — Start dev server
-- `npm run build` — Type-check and build (`tsc -b && vite build`)
-- `npm run lint` — Run ESLint
+- **iOS 26+**, Swift 6, SwiftUI, SwiftData
+- Keine externen Dependencies — alles nativ
 
-## Architecture
+## Projekt öffnen
 
-### Project Structure
+1. Repo clonen
+2. In Xcode: **File → New Project → iOS App** (SwiftUI, SwiftData)
+3. Projektname: `LumaTask`, Bundle ID wählen
+4. Alle Dateien aus dem `LumaTask/` Ordner in das Xcode-Projekt ziehen
+5. Build & Run (iOS 26 Simulator oder Gerät)
+
+## Architektur (MVVM)
+
 ```
-src/
-  components/       # Feature components (co-located .module.css)
-    ui/             # Reusable UI primitives (Button, Card, Switch, Toast)
-  context/          # React Context providers (TaskContext, NotificationContext, NetworkContext)
-  hooks/            # Custom hooks (useTasks, useSuggestions, useNotifications)
-  pages/            # Route pages (Focus, Calendar, Heatmap, Settings) with co-located .module.css
-  services/         # Data access layer (IndexedDB via idb, NLP, task intelligence)
-  types/            # TypeScript type definitions
-  utils/            # Utility functions
+LumaTask/
+  LumaTaskApp.swift           # @main Entry Point
+  ContentView.swift            # TabView (4 Tabs)
+
+  Models/                      # SwiftData @Model Entities
+  Services/                    # Business Logic
+    NLP/                       # Deutsche NLP-Parser Pipeline
+  ViewModels/                  # @Observable ViewModels
+  Views/
+    Tabs/                      # 4 Haupt-Screens
+    Components/                # Feature-Komponenten
+    Shared/                    # Wiederverwendbare UI
+  DesignSystem/                # Farben, Typography, Glass
+  Extensions/                  # Date, String Helfer
+  Resources/                   # Assets.xcassets
 ```
 
-### Key Patterns
-- **Styling**: CSS Modules (`.module.css`) with `clsx` for conditional classes. No inline styles or global CSS.
-- **Components**: Named exports, typed with `React.FC<Props>`. Framer Motion for animations (`motion.*` elements).
-- **State**: React Context for global state. Custom hooks expose context consumers.
-- **Data**: All DB access goes through `src/services/`. Uses IndexedDB via `idb` library.
-- **Routing**: React Router v7 with layout route pattern. Base path: `/luma-task`.
-- **IDs**: UUID v4 via `uuid` package.
+## Key Patterns
+
+- **Glass Design**: `GlassModifier` mit iOS 26 `.glassEffect()` API + Material-Fallback
+- **SwiftData**: `@Model` für Persistenz, `@Query` für reaktive Daten
+- **NLP Pipeline**: TextNormalizer → DateParser → TimeParser → RecurrenceParser → TitleCleaner → TagExtractor → IconMapper
+- **Sprache**: Deutsch (primär), Englisch (Datums-Parsing)
 
 ## Conventions
 
-- TypeScript strict mode
-- ESLint with React Hooks and React Refresh plugins
-- No test framework configured yet
-- 4-space indentation in TSX, consistent with existing code
+- Swift 6 strict concurrency
+- `@Observable` für ViewModels (nicht ObservableObject)
+- Deutsche UI-Strings, deutsche Variablennamen nur wo sinnvoll
+- Keine externen Packages

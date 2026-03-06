@@ -14,7 +14,7 @@ struct RecurrenceParser {
     ]
 
     func parse(_ text: String) -> (TaskRecurrence?, String) {
-        var remaining = text
+        let remaining = text
 
         // DAILY
         let dailyPattern = "\\b(jeden tag|täglich|taeglich|every day|daily)\\b"

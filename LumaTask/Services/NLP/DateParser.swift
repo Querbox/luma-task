@@ -16,7 +16,7 @@ struct DateParser {
 
     func parseRelativeDate(_ text: String) -> (Date?, String) {
         let now = Date()
-        var remaining = text
+        let remaining = text
 
         if remaining.range(of: "\\b(heute|today)\\b", options: [.regularExpression, .caseInsensitive]) != nil {
             return (now, normalizer.consume(remaining, pattern: "\\b(heute|today)\\b"))

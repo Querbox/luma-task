@@ -18,7 +18,7 @@ struct TimeParser {
     ]
 
     func parse(_ text: String) -> TimeResult {
-        var remaining = text
+        let remaining = text
 
         // HH:MM or HH.MM format
         let timePattern = "\\b(\\d{1,2})[:.]?(\\d{2})\\b"

@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 final class CalendarViewModel {
     var currentMonth: Date = Date()

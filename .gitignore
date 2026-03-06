@@ -19,7 +19,6 @@ xcuserdata/
 Packages/
 Package.pins
 Package.resolved
-*.xcodeproj
 .swiftpm/
 
 # macOS
@@ -34,3 +33,6 @@ profile
 
 # Misc
 *.log
+
+# Vite (legacy)
+.vite/

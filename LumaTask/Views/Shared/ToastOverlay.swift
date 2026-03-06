@@ -31,6 +31,7 @@ struct Toast: Identifiable {
     let type: ToastType
 }
 
+@MainActor
 @Observable
 final class ToastManager {
     var toasts: [Toast] = []

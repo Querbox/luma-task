@@ -1,0 +1,560 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B26EBD174F893722E17B570 /* TimeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDE7486B9E0D0E889635CE9 /* TimeParser.swift */; };
+		0B486EF10BA1E92741B3E4AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1188A5DC3682828FEE7B0F13 /* Assets.xcassets */; };
+		0BA9A6EFD3423611AF99579D /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256EDD4EAB659ADBEB0E4C74 /* CalendarViewModel.swift */; };
+		0D05E0AA62988345916DB780 /* LumaTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B48E36BCE4112CF746E7964 /* LumaTypography.swift */; };
+		10964FEC7C29F8C4C1D7830D /* TaskPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DED1C29990B34F43C85001D /* TaskPattern.swift */; };
+		12DE51DF6BC8C006909B85DB /* RecurrenceParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD12B6FF18CBDEEFD2B8F1B /* RecurrenceParser.swift */; };
+		1C05F085D3A062920038D639 /* ExportImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4715194CABD297FC2C3126F /* ExportImportService.swift */; };
+		212BC7355F6B15A8B4239F02 /* LumaColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4130AADB891AE79671FF1BE4 /* LumaColors.swift */; };
+		25EE7EE0AA14E00577ED8901 /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2F95472406543ACDCA0334 /* Recurrence.swift */; };
+		267024FE0AA4FA4E873F4974 /* String+Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00007FCCD479FA740AD5B36C /* String+Regex.swift */; };
+		26E47779E21F5F41764739EB /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733A21CA9024803B37618C46 /* Date+Formatting.swift */; };
+		279FFE9C217DBAABC1AB63FE /* HeatmapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D812B581F06C6DC4F78D0DA3 /* HeatmapViewModel.swift */; };
+		2941DA6218DB0B9B5C89009E /* HeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A961E2726EE0FF835754C53 /* HeatmapView.swift */; };
+		34075CBC0682A2FE8847FD5C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2314CA9FD42FF5C73D8D99 /* ContentView.swift */; };
+		3FEB96B1558CE46589C4E442 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59665D164217416521EF24EF /* GlassCard.swift */; };
+		4CDE3A71743E91B04FE49521 /* TaskParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480ACEAC65B96BD429814766 /* TaskParser.swift */; };
+		4F1D16582162B8409AD33908 /* LumaSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2B741882D818F9F7D239F3 /* LumaSpacing.swift */; };
+		5007454D3A5D3E196C2A8808 /* TaskDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D236A5CA2151902C64A95728 /* TaskDetailSheet.swift */; };
+		509BB5B06134930A82F77785 /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA2D55EA86A7B51D72EE612 /* FocusView.swift */; };
+		636378F767C1B11CB2B55A36 /* TaskEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B197998C80369B25DBA225B /* TaskEvent.swift */; };
+		704B3B3F95AE5B0D9BBB45FC /* TitleCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D065F4B647F39B39667BF0 /* TitleCleaner.swift */; };
+		7D2791E62635ED6BE7531905 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9220680690573689F7EC138 /* TaskListViewModel.swift */; };
+		7EBCECC8C48380A3B0AB0FAD /* ToastOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DFEBC4204F37638CBC806B /* ToastOverlay.swift */; };
+		7EF663D0F761E3548882E425 /* TextNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B0AB8A5449FE1F1A7A46A8 /* TextNormalizer.swift */; };
+		81201DC148B0603698B468CD /* TagExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8181F9E63EF623B679730F /* TagExtractor.swift */; };
+		85E5C84C22DDA993A73A7BD4 /* TaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83ABFCAD51D02E531FF6AB1 /* TaskItemView.swift */; };
+		966BBD5FDA73B99AEEC89EE3 /* LearningEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7CBCA051A53CC590BAA2B /* LearningEngine.swift */; };
+		96878353191FC483352BF7C7 /* DateParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F8BAFB896851BAAB792A1 /* DateParser.swift */; };
+		9DC5E11815F20ABACDDE8B40 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F9C3ED43E8B079624E592 /* HapticFeedback.swift */; };
+		A10EA1BA202F0BB90BB7F4D1 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F84348A879606A48C99F41 /* EmptyStateView.swift */; };
+		AE69A7FA5749992A026BF94D /* SuggestionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640C10A5F5E40837B4CD1FF /* SuggestionBanner.swift */; };
+		B23504E176E13D40CDB3A305 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5B4710C76456EB793DB26 /* SettingsView.swift */; };
+		B8539E6CC905817E8057A606 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD7E67546475576E8DEE219 /* NotificationService.swift */; };
+		C4D3A266A26C029E3239C09D /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D60C4A43A41C0E3D6185BC /* GlassModifier.swift */; };
+		D838D2730DFD8F1A640C9210 /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D645C9AE34A47AF584DA135E /* Suggestion.swift */; };
+		D9094C6D65C640E9C0249024 /* IconMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F0298B4ACC8E2B535C44D4 /* IconMapper.swift */; };
+		D988A64E0B5D6142194CD4C2 /* CalendarTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE875E9A029076BA372B6802 /* CalendarTabView.swift */; };
+		E6BC3B33C8E1ABBD94421309 /* TaskInputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C117CC0DECFFD67BA066269 /* TaskInputBar.swift */; };
+		EBC82973F6C04E797C76FED6 /* LumaTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EDBA7D6B685C5CD13CDCA6 /* LumaTaskApp.swift */; };
+		FF3A6B2C0F8BADB55BD14C45 /* LumaTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F837A9D80D4C6A8B83DE7 /* LumaTask.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00007FCCD479FA740AD5B36C /* String+Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Regex.swift"; sourceTree = "<group>"; };
+		03DFEBC4204F37638CBC806B /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
+		0C6F8BAFB896851BAAB792A1 /* DateParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateParser.swift; sourceTree = "<group>"; };
+		1188A5DC3682828FEE7B0F13 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1DED1C29990B34F43C85001D /* TaskPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPattern.swift; sourceTree = "<group>"; };
+		256EDD4EAB659ADBEB0E4C74 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		3B197998C80369B25DBA225B /* TaskEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEvent.swift; sourceTree = "<group>"; };
+		4130AADB891AE79671FF1BE4 /* LumaColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumaColors.swift; sourceTree = "<group>"; };
+		480ACEAC65B96BD429814766 /* TaskParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskParser.swift; sourceTree = "<group>"; };
+		48F0298B4ACC8E2B535C44D4 /* IconMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconMapper.swift; sourceTree = "<group>"; };
+		4CD7E67546475576E8DEE219 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		59665D164217416521EF24EF /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
+		6C117CC0DECFFD67BA066269 /* TaskInputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInputBar.swift; sourceTree = "<group>"; };
+		733A21CA9024803B37618C46 /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
+		76A5B4710C76456EB793DB26 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7DD12B6FF18CBDEEFD2B8F1B /* RecurrenceParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceParser.swift; sourceTree = "<group>"; };
+		7F8181F9E63EF623B679730F /* TagExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagExtractor.swift; sourceTree = "<group>"; };
+		8CB7CBCA051A53CC590BAA2B /* LearningEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningEngine.swift; sourceTree = "<group>"; };
+		8E2B741882D818F9F7D239F3 /* LumaSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumaSpacing.swift; sourceTree = "<group>"; };
+		9A961E2726EE0FF835754C53 /* HeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapView.swift; sourceTree = "<group>"; };
+		9B48E36BCE4112CF746E7964 /* LumaTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumaTypography.swift; sourceTree = "<group>"; };
+		A1EDBA7D6B685C5CD13CDCA6 /* LumaTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumaTaskApp.swift; sourceTree = "<group>"; };
+		A9D065F4B647F39B39667BF0 /* TitleCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCleaner.swift; sourceTree = "<group>"; };
+		ADCCC89FE177D014F5445266 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AEA2D55EA86A7B51D72EE612 /* FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusView.swift; sourceTree = "<group>"; };
+		B83ABFCAD51D02E531FF6AB1 /* TaskItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemView.swift; sourceTree = "<group>"; };
+		B9D60C4A43A41C0E3D6185BC /* GlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifier.swift; sourceTree = "<group>"; };
+		BB3124F16B8F92AC7FD3F21C /* LumaTask.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LumaTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6F84348A879606A48C99F41 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		CB2314CA9FD42FF5C73D8D99 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CE875E9A029076BA372B6802 /* CalendarTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTabView.swift; sourceTree = "<group>"; };
+		D236A5CA2151902C64A95728 /* TaskDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailSheet.swift; sourceTree = "<group>"; };
+		D4715194CABD297FC2C3126F /* ExportImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportImportService.swift; sourceTree = "<group>"; };
+		D645C9AE34A47AF584DA135E /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
+		D812B581F06C6DC4F78D0DA3 /* HeatmapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapViewModel.swift; sourceTree = "<group>"; };
+		D9220680690573689F7EC138 /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
+		DF9F9C3ED43E8B079624E592 /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
+		E6B0AB8A5449FE1F1A7A46A8 /* TextNormalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextNormalizer.swift; sourceTree = "<group>"; };
+		EA2F95472406543ACDCA0334 /* Recurrence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recurrence.swift; sourceTree = "<group>"; };
+		EE5F837A9D80D4C6A8B83DE7 /* LumaTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumaTask.swift; sourceTree = "<group>"; };
+		F640C10A5F5E40837B4CD1FF /* SuggestionBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionBanner.swift; sourceTree = "<group>"; };
+		FDDE7486B9E0D0E889635CE9 /* TimeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeParser.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0D0667DF3139111D819E8D97 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C6F84348A879606A48C99F41 /* EmptyStateView.swift */,
+				59665D164217416521EF24EF /* GlassCard.swift */,
+				03DFEBC4204F37638CBC806B /* ToastOverlay.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		40066D6A57381A35312C1D68 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB3124F16B8F92AC7FD3F21C /* LumaTask.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E72F1FCE90E420C59F9E5AC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1188A5DC3682828FEE7B0F13 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		655D04E6FB1A5256A7AC77AD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B1805CC54DBA1A41356FECA7 /* NLP */,
+				D4715194CABD297FC2C3126F /* ExportImportService.swift */,
+				8CB7CBCA051A53CC590BAA2B /* LearningEngine.swift */,
+				4CD7E67546475576E8DEE219 /* NotificationService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		656E00F297B1CFD1EA13C086 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				256EDD4EAB659ADBEB0E4C74 /* CalendarViewModel.swift */,
+				D812B581F06C6DC4F78D0DA3 /* HeatmapViewModel.swift */,
+				D9220680690573689F7EC138 /* TaskListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		721DC10213223C15D5B6A7BF /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				CE875E9A029076BA372B6802 /* CalendarTabView.swift */,
+				AEA2D55EA86A7B51D72EE612 /* FocusView.swift */,
+				9A961E2726EE0FF835754C53 /* HeatmapView.swift */,
+				76A5B4710C76456EB793DB26 /* SettingsView.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		739F975671B5A1D429B50967 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F640C10A5F5E40837B4CD1FF /* SuggestionBanner.swift */,
+				D236A5CA2151902C64A95728 /* TaskDetailSheet.swift */,
+				6C117CC0DECFFD67BA066269 /* TaskInputBar.swift */,
+				B83ABFCAD51D02E531FF6AB1 /* TaskItemView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		9086FBF3F6C497D960D8F2AC = {
+			isa = PBXGroup;
+			children = (
+				CC3FF3FA0CC3EEFDC132C8EF /* LumaTask */,
+				40066D6A57381A35312C1D68 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		93CF42DEDCC067CEC3BBD7FC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				739F975671B5A1D429B50967 /* Components */,
+				0D0667DF3139111D819E8D97 /* Shared */,
+				721DC10213223C15D5B6A7BF /* Tabs */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9787B274094D2062B9E22A31 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				733A21CA9024803B37618C46 /* Date+Formatting.swift */,
+				00007FCCD479FA740AD5B36C /* String+Regex.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B1805CC54DBA1A41356FECA7 /* NLP */ = {
+			isa = PBXGroup;
+			children = (
+				0C6F8BAFB896851BAAB792A1 /* DateParser.swift */,
+				48F0298B4ACC8E2B535C44D4 /* IconMapper.swift */,
+				7DD12B6FF18CBDEEFD2B8F1B /* RecurrenceParser.swift */,
+				7F8181F9E63EF623B679730F /* TagExtractor.swift */,
+				480ACEAC65B96BD429814766 /* TaskParser.swift */,
+				E6B0AB8A5449FE1F1A7A46A8 /* TextNormalizer.swift */,
+				FDDE7486B9E0D0E889635CE9 /* TimeParser.swift */,
+				A9D065F4B647F39B39667BF0 /* TitleCleaner.swift */,
+			);
+			path = NLP;
+			sourceTree = "<group>";
+		};
+		C13654417FB28D3D69FEFD30 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EE5F837A9D80D4C6A8B83DE7 /* LumaTask.swift */,
+				EA2F95472406543ACDCA0334 /* Recurrence.swift */,
+				D645C9AE34A47AF584DA135E /* Suggestion.swift */,
+				3B197998C80369B25DBA225B /* TaskEvent.swift */,
+				1DED1C29990B34F43C85001D /* TaskPattern.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CC3FF3FA0CC3EEFDC132C8EF /* LumaTask */ = {
+			isa = PBXGroup;
+			children = (
+				DF99267DF146CA56E5F3917E /* DesignSystem */,
+				9787B274094D2062B9E22A31 /* Extensions */,
+				C13654417FB28D3D69FEFD30 /* Models */,
+				5E72F1FCE90E420C59F9E5AC /* Resources */,
+				655D04E6FB1A5256A7AC77AD /* Services */,
+				656E00F297B1CFD1EA13C086 /* ViewModels */,
+				93CF42DEDCC067CEC3BBD7FC /* Views */,
+				CB2314CA9FD42FF5C73D8D99 /* ContentView.swift */,
+				ADCCC89FE177D014F5445266 /* Info.plist */,
+				A1EDBA7D6B685C5CD13CDCA6 /* LumaTaskApp.swift */,
+			);
+			path = LumaTask;
+			sourceTree = "<group>";
+		};
+		DF99267DF146CA56E5F3917E /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				B9D60C4A43A41C0E3D6185BC /* GlassModifier.swift */,
+				DF9F9C3ED43E8B079624E592 /* HapticFeedback.swift */,
+				4130AADB891AE79671FF1BE4 /* LumaColors.swift */,
+				8E2B741882D818F9F7D239F3 /* LumaSpacing.swift */,
+				9B48E36BCE4112CF746E7964 /* LumaTypography.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		047A6D1ECB32C76E7E29F8B9 /* LumaTask */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 532A168A28D7EA24105B7ABB /* Build configuration list for PBXNativeTarget "LumaTask" */;
+			buildPhases = (
+				3D1A065CB166FFC205999FC4 /* Sources */,
+				B44785E08C66D14B41EB07E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LumaTask;
+			packageProductDependencies = (
+			);
+			productName = LumaTask;
+			productReference = BB3124F16B8F92AC7FD3F21C /* LumaTask.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2FE97E8749D3C25C5E9E3D96 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2630;
+				TargetAttributes = {
+					047A6D1ECB32C76E7E29F8B9 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 44FD348A87B192E08311367E /* Build configuration list for PBXProject "LumaTask" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9086FBF3F6C497D960D8F2AC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				047A6D1ECB32C76E7E29F8B9 /* LumaTask */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B44785E08C66D14B41EB07E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B486EF10BA1E92741B3E4AE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3D1A065CB166FFC205999FC4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D988A64E0B5D6142194CD4C2 /* CalendarTabView.swift in Sources */,
+				0BA9A6EFD3423611AF99579D /* CalendarViewModel.swift in Sources */,
+				34075CBC0682A2FE8847FD5C /* ContentView.swift in Sources */,
+				26E47779E21F5F41764739EB /* Date+Formatting.swift in Sources */,
+				96878353191FC483352BF7C7 /* DateParser.swift in Sources */,
+				A10EA1BA202F0BB90BB7F4D1 /* EmptyStateView.swift in Sources */,
+				1C05F085D3A062920038D639 /* ExportImportService.swift in Sources */,
+				509BB5B06134930A82F77785 /* FocusView.swift in Sources */,
+				3FEB96B1558CE46589C4E442 /* GlassCard.swift in Sources */,
+				C4D3A266A26C029E3239C09D /* GlassModifier.swift in Sources */,
+				9DC5E11815F20ABACDDE8B40 /* HapticFeedback.swift in Sources */,
+				2941DA6218DB0B9B5C89009E /* HeatmapView.swift in Sources */,
+				279FFE9C217DBAABC1AB63FE /* HeatmapViewModel.swift in Sources */,
+				D9094C6D65C640E9C0249024 /* IconMapper.swift in Sources */,
+				966BBD5FDA73B99AEEC89EE3 /* LearningEngine.swift in Sources */,
+				212BC7355F6B15A8B4239F02 /* LumaColors.swift in Sources */,
+				4F1D16582162B8409AD33908 /* LumaSpacing.swift in Sources */,
+				FF3A6B2C0F8BADB55BD14C45 /* LumaTask.swift in Sources */,
+				EBC82973F6C04E797C76FED6 /* LumaTaskApp.swift in Sources */,
+				0D05E0AA62988345916DB780 /* LumaTypography.swift in Sources */,
+				B8539E6CC905817E8057A606 /* NotificationService.swift in Sources */,
+				25EE7EE0AA14E00577ED8901 /* Recurrence.swift in Sources */,
+				12DE51DF6BC8C006909B85DB /* RecurrenceParser.swift in Sources */,
+				B23504E176E13D40CDB3A305 /* SettingsView.swift in Sources */,
+				267024FE0AA4FA4E873F4974 /* String+Regex.swift in Sources */,
+				D838D2730DFD8F1A640C9210 /* Suggestion.swift in Sources */,
+				AE69A7FA5749992A026BF94D /* SuggestionBanner.swift in Sources */,
+				81201DC148B0603698B468CD /* TagExtractor.swift in Sources */,
+				5007454D3A5D3E196C2A8808 /* TaskDetailSheet.swift in Sources */,
+				636378F767C1B11CB2B55A36 /* TaskEvent.swift in Sources */,
+				E6BC3B33C8E1ABBD94421309 /* TaskInputBar.swift in Sources */,
+				85E5C84C22DDA993A73A7BD4 /* TaskItemView.swift in Sources */,
+				7D2791E62635ED6BE7531905 /* TaskListViewModel.swift in Sources */,
+				4CDE3A71743E91B04FE49521 /* TaskParser.swift in Sources */,
+				10964FEC7C29F8C4C1D7830D /* TaskPattern.swift in Sources */,
+				7EF663D0F761E3548882E425 /* TextNormalizer.swift in Sources */,
+				0B26EBD174F893722E17B570 /* TimeParser.swift in Sources */,
+				704B3B3F95AE5B0D9BBB45FC /* TitleCleaner.swift in Sources */,
+				7EBCECC8C48380A3B0AB0FAD /* ToastOverlay.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3EF1EA17EEAA07C4883BD5F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LumaTask/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.querbox.lumatask;
+				PRODUCT_NAME = "Luma Task";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4D98F4ED86CDC0DD56D8DDE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F1E59B9F89E22231F37C8AAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LumaTask/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.querbox.lumatask;
+				PRODUCT_NAME = "Luma Task";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FBBA6297E87424542473E289 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		44FD348A87B192E08311367E /* Build configuration list for PBXProject "LumaTask" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBBA6297E87424542473E289 /* Debug */,
+				4D98F4ED86CDC0DD56D8DDE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		532A168A28D7EA24105B7ABB /* Build configuration list for PBXNativeTarget "LumaTask" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1E59B9F89E22231F37C8AAF /* Debug */,
+				3EF1EA17EEAA07C4883BD5F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2FE97E8749D3C25C5E9E3D96 /* Project object */;
+}

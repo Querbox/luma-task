@@ -9,6 +9,16 @@ extension Color {
 
     // MARK: - Heatmap
     static let lumaHeatmapRed = Color(hex: "FF2D55")
+}
+
+// MARK: - ShapeStyle Convenience
+
+extension ShapeStyle where Self == Color {
+    static var lumaAccent: Color { .lumaAccent }
+    static var lumaDanger: Color { .lumaDanger }
+    static var lumaSuccess: Color { .lumaSuccess }
+    static var lumaWarning: Color { .lumaWarning }
+    static var lumaHeatmapRed: Color { .lumaHeatmapRed }
 
     // MARK: - Hex Initializer
     init(hex: String) {
